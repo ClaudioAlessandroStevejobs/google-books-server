@@ -1,11 +1,10 @@
-import { Order } from "../interfaces/Order";
 export interface User {
   email: string;
   id: string;
   password: string;
+  fund: number;
   token?: string;
   bookIds: string[];
-  orders?: Order[];
-  role: "Writer" | "Reader";
+  role: "WRITER" | "READER";
   nationality: string;
 }
