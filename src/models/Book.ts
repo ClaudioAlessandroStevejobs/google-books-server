@@ -4,23 +4,26 @@ export class Book {
   constructor(
     private title: string,
     private price: number = 0,
+    private soldCopies: number = 0,
     private launchDate: string,
     private genre: string,
     private description: string,
     private authors: string[],
     private editors: string[],
-    private reviews: Review[],
+    private reviews: Review[] = [],
     private id: string = v4()
   ) {}
 
   getTitle = () => this.title;
   getPrice = () => this.price;
+  getSoldCopies = () => this.soldCopies;
   getLaunchDate = () => this.launchDate;
   getGenre = () => this.genre;
   getDescription = () => this.description;
   getAuthors = () => this.authors;
   getEditors = () => this.editors;
   getReviews = () => this.reviews;
+  getReviewsNum = () => this.reviews;
   getId = () => this.id;
   setTitle = (title: string) => (this.title = title);
   setPrice = (price: number) => (this.price = price);

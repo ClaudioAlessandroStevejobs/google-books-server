@@ -5,7 +5,8 @@ export class Writer implements User {
     public email: string,
     public password: string,
     public nationality: string,
-    public role: "Writer" | "Reader" = "Writer",
+    public fund: number,
+    public role: "WRITER" | "READER" = "WRITER",
     public bookIds: string[],
     public id: string = v4()
   ) {}
