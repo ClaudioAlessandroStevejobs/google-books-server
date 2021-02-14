@@ -5,22 +5,22 @@
 
 Routers:
 - authRouter:
-    - login (post)
-    - register (post)
+- login (post)
+- register (post)
 - reader / customer:
-    - fare un ordine (post)
-    - regalare un buono (post)
-    - vedere i miei libri (get)
-    - scrivere una recensione di un libro che ho (post)
-    - eliminare un mio libro (delete)
-    - ricaricare il conto (post/put)
-    - vedere le tue recensioni (get)
-    - modificare una recensione (put)
+- fare un ordine (post)
+- regalare un buono (post)
+- vedere i miei libri (get)
+- scrivere una recensione di un libro che ho (post)
+- eliminare un mio libro (delete)
+- ricaricare il conto (post/put)
+- vedere le tue recensioni (get)
+- modificare una recensione (put)
 - writer / author:
-    - scrivere un libro (post)
-    - ritirare un libro pubblicato (delete)
-    - modificare un libro (put)
-    - visualizza i guadagni (get)
+- scrivere un libro (post)
+- ritirare un libro pubblicato (delete)
+- modificare un libro (put)
+- visualizza i guadagni (get)
 
 Models:
 - Book
@@ -30,19 +30,19 @@ Models:
 Interfaces:
 - User (generico)
 - Recensione:
-    - id
-    - data
-    - text
-    - valutazione
-    - ordine:
-    - id
-    - data
-    - inventario (array di libri | buoni)
-    - tot
-- buono:
-    - id
-    - scadenza (es 10 giorni dopo l’ordine)
-    - soldi
+id
+data
+text
+valutazione
+ordine:
+id
+data
+inventario (array di libri | buoni)
+tot
+buono:
+id
+scadenza (es 10 giorni dopo l’ordine)
+soldi
 
 
 
