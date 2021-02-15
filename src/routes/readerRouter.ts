@@ -1,23 +1,47 @@
-import {Router, Request, Response} from 'express';
+import { Router, Request, Response } from 'express';
+import { body, param } from 'express-validator';
 import { getBookById, getReaderById } from '../fileManager';
+import { Order } from '../interfaces/Order';
+import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
+import { validationMiddleware } from '../middlewares/validationMiddleware';
 const router = Router();
 
 //vedere i writer
-router.get('/',(req:Request,res:Response)=>{
+router.get('/',
+    param('id').isUUID(),
+    validationMiddleware,
+    readerAuthMiddleware,
+    (req: Request, res: Response) => {
     res.status(200).json(getReaderById(req.params.id));
 })
 
 //vedere i libri
-router.get('/books',(req:Request,res:Response)=>{
-
+router.get('/books',
+    param('id').isUUID(),
+    validationMiddleware,
+    readerAuthMiddleware,
+    (req: Request, res: Response) => {
+    res.status(200).json(getBookById(req.params.id));
 })
 
 //vedere le recensioni dei libri
-router.get('/reviews',(req:Request,res:Response)=>{
+router.get('/reviews',
+    param('id').isUUID(),
+    validationMiddleware,
+    readerAuthMiddleware,
+    (req: Request, res: Response) => {
+    res.status(200).json(getReviewsById(req.params.id))
 })
 
 //fare un ordine
-router.post('/orders',({body:orders}:Request,res:Response)=>{})
+router.post('/orders',
+    body('orders').isString().withMessage('Invalid order') ,
+    validationMiddleware,
+    readerAuthMiddleware,
+    ({ body: {inventory=[]} }: Request, res: Response) => {
+        addOrder(order);
+        return res.status(201).json({message:'order effected'})
+})
 
 //regalare un buono
 router.post('/coupons',({body:{id,money,deadline}}:Request,res:Response)=>{})
