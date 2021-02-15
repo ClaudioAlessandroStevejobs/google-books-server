@@ -3,8 +3,10 @@ import { Reader } from "./models/Reader";
 import { Writer } from "./models/Writer";
 import fs from 'fs';
 import { User } from "./interfaces/User";
+import { Order } from "./interfaces/Order";
 const booksURI = `${process.cwd()}/files/books.json`;
-const usersURI = `${process.cwd()}/files/users.json`;
+const writersURI = `${process.cwd()}/files/writers.json`;
+const readersURI = `${process.cwd()}/files/readers.json`;
 
 
 /**
@@ -30,11 +32,9 @@ export const readBooks = (): Book[] => {
 }
 
 export const readWriters = () : Writer[] => {
-	const anyArray = JSON.parse(fs.readFileSync(usersURI).toString());
+	const anyArray = JSON.parse(fs.readFileSync(writersURI).toString());
 	let writerArray : Writer[] = [];
-	anyArray
-		.filter((user : User) => user.role === 'WRITER')
-		.map(({email, password, nationality, booksId, fund, id} : any) => {
+	anyArray.map(({email, password, nationality, booksId, fund, id} : any) => {
 			writerArray.push(new Writer(email, password, nationality, fund, 'WRITER', booksId, id))
 		})
 	return writerArray;
@@ -51,8 +51,18 @@ export const readReaders = () : Reader[] => {
 	return readerArray;
 }
 
-export const getBookById = (iId : string) : Book | undefined => readBooks().find(((book : Book) => book.getId() === iId));
+export const getBookById = (iId : string) : Book | undefined => 
+	readBooks().find(((book : Book) => book.getId() === iId));
 
-export const getWriterById = (iId : string) : Writer | undefined => readWriters().find(((writer : Writer) => writer.id === iId));
+export const getWriterById = (iId : string) : Writer | undefined => 
+	readWriters().find(((writer : Writer) => writer.id === iId));
 
-export const getReaderById = (iId : string) : Reader | undefined => readReaders().find(((reader : Reader) => reader.id === iId));
+export const getReaderById = (iId : string) : Reader | undefined => 
+	readReaders().find(((reader : Reader) => reader.id === iId));
+
+
+export const makeOrder = (uId : string, order: Order) => {
+	const readers = readReaders();
+	
+
+}
