@@ -4,8 +4,8 @@ import writerRouter from "./routes/writerRouter";
 import readerRouter from "./routes/readerRouter";
 const app = express();
 app.use('/auth', authRouter);
-app.use('/writer', writerRouter);
-app.use('/reader', readerRouter);
+app.use('/writer/:id', writerRouter);
+app.use('/reader/:id', readerRouter);
 const PORT = 3001;
 
 

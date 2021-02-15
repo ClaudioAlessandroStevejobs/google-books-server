@@ -36,21 +36,48 @@ export const readBooks = (): Book[] => {
 export const readWriters = (): Writer[] => {
 	const anyArray = JSON.parse(fs.readFileSync(writersURI).toString());
 	let writerArray: Writer[] = [];
-	anyArray.map(({ email, password, nationality, booksIds, fund, id, token }: User) => {
-		writerArray.push(new Writer(email, password, nationality, fund, booksIds, id, token));
-	})
+	anyArray.map(
+		({ email, password, nationality, booksIds, fund, id, token }: User) => {
+			writerArray.push(
+				new Writer(email, password, nationality, fund, booksIds, id, token)
+			);
+		}
+	);
 	return writerArray;
-}
-
+};
 
 export const readReaders = (): Reader[] => {
 	const anyArray = JSON.parse(fs.readFileSync(readersURI).toString());
 	let readerArray: Reader[] = [];
-	anyArray.map(({ email, id, password, fund, token, booksIds, nationality, orders = [], coupons = [] }: User) => {
-		readerArray.push(new Reader(email, password, nationality, fund, booksIds, orders, coupons, id, token));
-	})
+	anyArray.map(
+		({
+			email,
+			id,
+			password,
+			fund,
+			token,
+			booksIds,
+			nationality,
+			orders = [],
+			coupons = [],
+		}: User) => {
+			readerArray.push(
+				new Reader(
+					email,
+					password,
+					nationality,
+					fund,
+					booksIds,
+					orders,
+					coupons,
+					id,
+					token
+				)
+			);
+		}
+	);
 	return readerArray;
-}
+};
 
 export const getBookById = (iId: string): Book | undefined =>
 	readBooks().find((book: Book) => book.getId() === iId);
@@ -70,3 +97,33 @@ export const getWriterByToken = (token: string): Writer | undefined =>
 export const makeOrder = (uId: string, order: Order) => {
 	const readers = readReaders();
 };
+
+export const isEmailExists = (email: string, role: "READER" | "WRITER") =>
+({
+	WRITER: readWriters().some((writer: Writer) => writer.getEmail() === email),
+	READER: readReaders().some((reader: Reader) => reader.getEmail() === email),
+}[role]);
+
+export const isPasswordCorrect = (
+	password: string,
+	role: "READER" | "WRITER"
+) =>
+({
+	WRITER: readWriters().some(
+		(writer: Writer) => writer.getPassword() === password
+	),
+	READER: readReaders().some(
+		(reader: Reader) => reader.getPassword() === password
+	),
+}[role]);
+
+export const writeUser = (user: Writer | Reader, role: "READER" | "WRITER") => {
+	let array: Writer[] | Reader[] = [];
+	let uri: string = '';
+	({
+		WRITER: () => { array = readWriters(); array.push(user as Writer); uri = writersURI; },
+		READER: () => { array = readReaders(); array.push(user as Reader); uri = readersURI; },
+	})[role]();
+
+	fs.writeFileSync(uri, JSON.stringify(array, null, 2))
+}
