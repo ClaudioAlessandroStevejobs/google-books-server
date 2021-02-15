@@ -12,29 +12,29 @@ export class Reader {
 		private orders: Order[],
 		private coupons: Coupon[],
 		private id: string = v4(),
-		private token? : string
-	) {}
-	
+		private token?: string
+	) { }
+
 	getEmail = () => this.email;
 	getPassword = () => this.password;
 	getNationality = () => this.nationality;
 	getFund = () => this.fund;
 	setFund = (fund: number) => { this.fund = fund }
 	getBooksIds = () => this.booksIds;
-	addBooksIds = (...bIds: string[]) => { 
+	addBooksIds = (...bIds: string[]) => {
 		bIds.map(bId => {
 			this.booksIds.push(bId);
-		}) 
+		})
 	}
 	getOrders = () => this.orders;
 	addOrder = (order: Order) => { this.orders.push(order) }
 	getCoupons = () => this.coupons;
-	addCoupons = (...coupons : Coupon[]) => {
+	addCoupons = (...coupons: Coupon[]) => {
 		coupons.map(coup => {
 			this.coupons.push(coup);
 		})
 	}
 	getToken = () => this.token;
-	setToken = (token : string) => this.token = token;
+	setToken = (token: string) => this.token = token;
 	getId = () => this.id;
 }

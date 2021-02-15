@@ -9,6 +9,6 @@ export type User = {
   token?: string;
   booksIds: string[];
   nationality: string;
-  orders? : Order[];
-  coupons? : Coupon[];
+  orders?: Order[];
+  coupons?: Coupon[];
 }

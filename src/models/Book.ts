@@ -12,7 +12,7 @@ export class Book {
     private editors: string[],
     private reviews: Review[] = [],
     private id: string = v4()
-  ) {}
+  ) { }
 
   getTitle = () => this.title;
   getPrice = () => this.price;

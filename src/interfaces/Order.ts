@@ -1,6 +1,6 @@
-export interface Order{
-    id:string;
-    date:string;
-    inventory:string[];
-    total:number;
+export interface Order {
+    id: string;
+    date: string;
+    inventory: string[];
+    total: number;
 }

@@ -8,8 +8,8 @@ export class Writer {
 		private booksIds: string[],
 		private id: string = v4(),
 		private token?: string
-	) {}
-	
+	) { }
+
 	getEmail = () => this.email;
 	getPassword = () => this.password;
 	getNationality = () => this.nationality;
@@ -18,6 +18,6 @@ export class Writer {
 	getBooksIds = () => this.booksIds;
 	addBookId = (bId: string) => { this.booksIds.push(bId) }
 	getToken = () => this.token;
-	setToken = (token : string) => this.token = token;
+	setToken = (token: string) => this.token = token;
 	getId = () => this.id;
 }
