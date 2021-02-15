@@ -35,18 +35,17 @@ export const readWriters = () : Writer[] => {
 	const anyArray = JSON.parse(fs.readFileSync(writersURI).toString());
 	let writerArray : Writer[] = [];
 	anyArray.map(({email, password, nationality, booksIds, fund, id, token} : User) => {
-			writerArray.push(new Writer(email, password, nationality, fund, booksIds, id, token))
-		})
+		writerArray.push(new Writer(email, password, nationality, fund, booksIds, id, token));
+	})
 	return writerArray;
 }
 
 export const readReaders = () : Reader[] => {
 	const anyArray = JSON.parse(fs.readFileSync(readersURI).toString());
 	let readerArray : Reader[] = [];
-	anyArray
-		.map(({email, id, password, fund, token, booksIds, nationality, orders = [], coupons = []} : User) => {
-			readerArray.push(new Reader(email, password, nationality, fund, booksIds, orders, coupons, id, token))
-		})
+	anyArray.map(({email, id, password, fund, token, booksIds, nationality, orders = [], coupons = []} : User) => {
+		readerArray.push(new Reader(email, password, nationality, fund, booksIds, orders, coupons, id, token));
+	})
 	return readerArray;
 }
 
