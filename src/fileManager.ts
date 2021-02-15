@@ -34,8 +34,8 @@ export const readBooks = (): Book[] => {
 export const readWriters = () : Writer[] => {
 	const anyArray = JSON.parse(fs.readFileSync(writersURI).toString());
 	let writerArray : Writer[] = [];
-	anyArray.map(({email, password, nationality, booksId, fund, id} : any) => {
-			writerArray.push(new Writer(email, password, nationality, fund, booksId, id))
+	anyArray.map(({email, password, nationality, booksIds, fund, id, token} : User) => {
+			writerArray.push(new Writer(email, password, nationality, fund, booksIds, id, token))
 		})
 	return writerArray;
 }
@@ -44,8 +44,8 @@ export const readReaders = () : Reader[] => {
 	const anyArray = JSON.parse(fs.readFileSync(readersURI).toString());
 	let readerArray : Reader[] = [];
 	anyArray
-		.map(({email, password, nationality, booksId, orders, fund, id} : any) => {
-			readerArray.push(new Reader(email, password, nationality, fund, booksId, orders, id))
+		.map(({email, id, password, fund, token, booksIds, nationality, orders = [], coupons = []} : User) => {
+			readerArray.push(new Reader(email, password, nationality, fund, booksIds, orders, coupons, id, token))
 		})
 	return readerArray;
 }
@@ -54,14 +54,13 @@ export const getBookById = (iId : string) : Book | undefined =>
 	readBooks().find(((book : Book) => book.getId() === iId));
 
 export const getWriterById = (iId : string) : Writer | undefined => 
-	readWriters().find(((writer : Writer) => writer.id === iId));
+	readWriters().find(((writer : Writer) => writer.getId() === iId));
 
 export const getReaderById = (iId : string) : Reader | undefined => 
-	readReaders().find((({id} : Reader) => id === iId));
+	readReaders().find(((reader : Reader) => reader.getId() === iId));
 
 
 export const makeOrder = (uId : string, order: Order) => {
 	const readers = readReaders();
-	
 
 }
