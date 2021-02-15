@@ -5,7 +5,7 @@ export class Writer {
 		private password: string,
 		private nationality: string,
 		private fund: number,
-		private booksIds: string[],
+		private booksIds: string[] = [],
 		private id: string = v4(),
 		private token?: string
 	) { }

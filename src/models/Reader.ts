@@ -8,9 +8,9 @@ export class Reader {
 		private password: string,
 		private nationality: string,
 		private fund: number,
-		private booksIds: string[],
-		private orders: Order[],
-		private coupons: Coupon[],
+		private booksIds: string[] = [],
+		private orders: Order[] = [],
+		private coupons: Coupon[] = [],
 		private id: string = v4(),
 		private token?: string
 	) { }
