@@ -7,7 +7,7 @@ export class Reader {
 		private email: string,
 		private password: string,
 		private nationality: string,
-		private fund: number,
+		private fund: number = 0,
 		private booksIds: string[] = [],
 		private orders: Order[] = [],
 		private coupons: Coupon[] = [],

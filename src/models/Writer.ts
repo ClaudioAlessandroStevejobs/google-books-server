@@ -4,7 +4,7 @@ export class Writer {
 		private email: string,
 		private password: string,
 		private nationality: string,
-		private fund: number,
+		private fund: number = 0,
 		private booksIds: string[] = [],
 		private id: string = v4(),
 		private token?: string
