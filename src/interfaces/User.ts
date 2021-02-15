@@ -5,6 +5,5 @@ export interface User {
   fund: number;
   token?: string;
   bookIds: string[];
-  role: "WRITER" | "READER";
   nationality: string;
 }

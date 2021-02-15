@@ -9,7 +9,6 @@ export class Reader implements User {
     public password: string,
     public nationality: string,
     public fund: number,
-    public role: "WRITER" | "READER" = "READER",
     public bookIds: string[],
     public coupons: Coupon[],
     public orders: Order[],
