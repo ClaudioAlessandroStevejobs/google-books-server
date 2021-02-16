@@ -8,25 +8,5 @@
     "orders": [],
     "coupons": [],
     "id": "70e77b8e-7839-47d0-b7e4-3fe79b974d5e"
-  },
-  {
-    "email": "test1@test.com",
-    "password": "sos",
-    "nationality": "Roma",
-    "fund": 0,
-    "booksIds": [],
-    "orders": [],
-    "coupons": [],
-    "id": "2684ecdf-f0cb-433e-a03b-1f1483136d27"
-  },
-  {
-    "email": "test1@test.com",
-    "password": "sos",
-    "nationality": "Roma",
-    "fund": 0,
-    "booksIds": [],
-    "orders": [],
-    "coupons": [],
-    "id": "a76b97f0-767c-4f7e-bfd0-2e91e56b1b1f"
   }
 ]

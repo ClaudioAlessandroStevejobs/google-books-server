@@ -3,7 +3,7 @@ import { body } from 'express-validator';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 import stringHash from 'string-hash';
 import { Reader } from '../models/Reader';
-import { isEmailExists, writeUser } from '../fileManager'
+import { isEmailExists, isPasswordCorrect, writeToken, writeUser } from '../fileManager'
 import { User } from '../interfaces/User';
 import { Writer } from '../models/Writer';
 const router = Router();
@@ -15,7 +15,8 @@ router.post('/register',
     body('role').custom(r => r === 'READER' || r === 'WRITER').withMessage('Invalid role'),
     validationMiddleware,
     ({ body: { email, password, nationality, role } }: Request, res: Response) => {
-        isEmailExists(email, role) && res.status(409).json({ message: 'Already exists' });
+        if (isEmailExists(email, role))
+            return res.status(409).json({ message: 'Already exists' });
         const newUser = role === 'READER'
             ? new Reader(email, password, nationality)
             : new Writer(email, password, nationality)
@@ -24,7 +25,15 @@ router.post('/register',
     })
 
 router.post('/login', ({ body: { email, password, role } }: Request, res: Response) => {
+    if (!isEmailExists(email, role))
+        return res.status(401).json({ message: 'Not authorized' });
+    if (!isPasswordCorrect(password, role))
+        return res.status(403).json({ message: 'Forbidden' });
+    return res.status(201).send(writeToken(email, role));
 })
 
+router.post('/logout', (req: Request, res: Response) => {
+
+})
 export default router;
 

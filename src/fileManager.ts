@@ -4,6 +4,7 @@ import { Writer } from "./models/Writer";
 import fs from "fs";
 import { User } from "./interfaces/User";
 import { Order } from "./interfaces/Order";
+import { v4 } from "uuid";
 const booksURI = `${process.cwd()}/files/books.json`;
 const writersURI = `${process.cwd()}/files/writers.json`;
 const readersURI = `${process.cwd()}/files/readers.json`;
@@ -126,4 +127,17 @@ export const writeUser = (user: Writer | Reader, role: "READER" | "WRITER") => {
 	})[role]();
 
 	fs.writeFileSync(uri, JSON.stringify(array, null, 2))
+}
+
+export const writeToken = (email: string, role: "READER" | "WRITER"): string => {
+	let array: Writer[] | Reader[] = [];
+	let uri: string = '';
+	const token = v4();
+	({
+		WRITER: () => { array = readWriters(); array.find(writer => writer.getEmail() === email)!.setToken(token); uri = writersURI; },
+		READER: () => { array = readReaders(); array.find(writer => writer.getEmail() === email)!.setToken(token); uri = readersURI; },
+	})[role]();
+
+	fs.writeFileSync(uri, JSON.stringify(array, null, 2))
+	return token;
 }
