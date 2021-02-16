@@ -7,5 +7,23 @@
     "booksIds": [],
     "id": "96f2fb07-1d1c-42df-87de-3b95115843be",
     "token": "fe5a58ba-26bf-42e3-8fa6-7eb593e1655b"
+  },
+  {
+    "email": "test3@test.com",
+    "password": 193433706,
+    "nationality": "Roma",
+    "fund": 0,
+    "booksIds": [],
+    "id": "b5ca17ac-8962-4c55-a10c-ada785427388",
+    "token": "512c868a-8b59-4c5b-bba4-b397bca8fd3c"
+  },
+  {
+    "email": "test4@test.com",
+    "password": "193433706",
+    "nationality": "Roma",
+    "fund": 0,
+    "booksIds": [],
+    "id": "71e5e779-0d48-43d5-b41c-41037b8f48b0",
+    "token": "31985646-977c-4cb4-8b41-9af0edc73d01"
   }
 ]
