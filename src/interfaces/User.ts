@@ -1,38 +1,38 @@
 import { Coupon } from "./Coupon";
 import { Order } from "./Order";
 
-// export type User = {
-//   email: string;
-//   id: string;
-//   password: string;
-//   fund: number;
-//   token?: string;
-//   booksIds: string[];
-//   nationality: string;
-//   orders?: Order[];
-//   coupons?: Coupon[];
+// export type User ={
+//     _email: string;
+//     _id: string;
+//     _password: string;
+//     _fund: number;
+//     _token?: string;
+//     _booksIds: string[];
+//     _nationality: string;
+//     _orders?: Order[];
+//     _coupons?: Coupon[];
 // }
 
 interface Writer {
-    email: string,
-    password: string,
-    nationality: string,
-    fund: number,
-    booksIds: string[],
-    id: string,
-    token?: string,
+    _email: string,
+    _password: string,
+    _nationality: string,
+    _fund: number,
+    _booksIds: string[],
+    _id: string,
+    _token?: string,
 }
 
 interface Reader {
-    email: string,
-    password: string,
-    nationality: string,
-    fund: number,
-    booksIds: string[],
-    orders: Order[],
-    coupons: Coupon[],
-    id: string,
-    token?: string,
+    _email: string,
+    _password: string,
+    _nationality: string,
+    _fund: number,
+    _booksIds: string[],
+    _orders: Order[],
+    _coupons: Coupon[],
+    _id: string,
+    _token?: string,
 }
 
 export type User = Writer & Reader;
