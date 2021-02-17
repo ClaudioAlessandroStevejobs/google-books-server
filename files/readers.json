@@ -1,32 +1,33 @@
 [
   {
-    "email": "test1@test.com",
-    "password": "sos",
-    "nationality": "Roma",
-    "fund": 0,
-    "booksIds": [],
-    "orders": [],
-    "coupons": [],
-    "id": "70e77b8e-7839-47d0-b7e4-3fe79b974d5e"
+    "_email": "test1@test.com",
+    "_password": "193433706",
+    "_nationality": "Rome",
+    "_fund": 0,
+    "_booksIds": [],
+    "_orders": [],
+    "_coupons": [],
+    "_id": "267a6e9e-014d-4957-b3a4-e9e591128637",
+    "_token": "265b3fab-17a7-43fa-addd-cfdf382142a4"
   },
   {
-    "email": "test1@test.com",
-    "password": "sos",
-    "nationality": "Roma",
-    "fund": 0,
-    "booksIds": [],
-    "orders": [],
-    "coupons": [],
-    "id": "2684ecdf-f0cb-433e-a03b-1f1483136d27"
+    "_email": "test2@test.com",
+    "_password": "193433706",
+    "_nationality": "Rome",
+    "_fund": 0,
+    "_booksIds": [],
+    "_orders": [],
+    "_coupons": [],
+    "_id": "65514b5f-97c8-4ded-97fc-7f88c5c6782c"
   },
   {
-    "email": "test1@test.com",
-    "password": "sos",
-    "nationality": "Roma",
-    "fund": 0,
-    "booksIds": [],
-    "orders": [],
-    "coupons": [],
-    "id": "a76b97f0-767c-4f7e-bfd0-2e91e56b1b1f"
+    "_email": "test3@test.com",
+    "_password": "193433706",
+    "_nationality": "Rome",
+    "_fund": 0,
+    "_booksIds": [],
+    "_orders": [],
+    "_coupons": [],
+    "_id": "8ee97c89-a70c-4041-ad81-19125b682ce5"
   }
 ]

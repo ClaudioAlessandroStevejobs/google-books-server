@@ -4,6 +4,7 @@ import { Writer } from "./models/Writer";
 import fs from "fs";
 import { User } from "./interfaces/User";
 import { Order } from "./interfaces/Order";
+import { v4 } from "uuid";
 const booksURI = `${process.cwd()}/files/books.json`;
 const writersURI = `${process.cwd()}/files/writers.json`;
 const readersURI = `${process.cwd()}/files/readers.json`;
@@ -37,9 +38,9 @@ export const readWriters = (): Writer[] => {
 	const anyArray = JSON.parse(fs.readFileSync(writersURI).toString());
 	let writerArray: Writer[] = [];
 	anyArray.map(
-		({ email, password, nationality, booksIds, fund, id, token }: User) => {
+		({ _email, _password, _nationality, _booksIds, _fund, _id, _token }: User) => {
 			writerArray.push(
-				new Writer(email, password, nationality, fund, booksIds, id, token)
+				new Writer(_email, _password, _nationality, _fund, _booksIds, _id, _token)
 			);
 		}
 	);
@@ -51,27 +52,27 @@ export const readReaders = (): Reader[] => {
 	let readerArray: Reader[] = [];
 	anyArray.map(
 		({
-			email,
-			id,
-			password,
-			fund,
-			token,
-			booksIds,
-			nationality,
-			orders = [],
-			coupons = [],
+			_email,
+			_id,
+			_password,
+			_fund,
+			_token,
+			_booksIds,
+			_nationality,
+			_orders = [],
+			_coupons = [],
 		}: User) => {
 			readerArray.push(
 				new Reader(
-					email,
-					password,
-					nationality,
-					fund,
-					booksIds,
-					orders,
-					coupons,
-					id,
-					token
+					_email,
+					_password,
+					_nationality,
+					_fund,
+					_booksIds,
+					_orders,
+					_coupons,
+					_id,
+					_token
 				)
 			);
 		}
@@ -83,16 +84,10 @@ export const getBookById = (iId: string): Book | undefined =>
 	readBooks().find((book: Book) => book.getId() === iId);
 
 export const getWriterById = (iId: string): Writer | undefined =>
-	readWriters().find((writer: Writer) => writer.getId() === iId);
+	readWriters().find(({ id }: Writer) => id === iId);
 
 export const getReaderById = (iId: string): Reader | undefined =>
-	readReaders().find((reader: Reader) => reader.getId() === iId);
-
-export const getReaderByToken = (token: string): Reader | undefined =>
-	readReaders().find((reader: Reader) => reader.getToken() === token);
-
-export const getWriterByToken = (token: string): Writer | undefined =>
-	readWriters().find((writer: Writer) => writer.getToken() === token);
+	readReaders().find(({ id }: Reader) => id === iId);
 
 export const makeOrder = (uId: string, order: Order) => {
 	const readers = readReaders();
@@ -107,32 +102,45 @@ export const isBookExists = (bookId: string): boolean => {
 
 export const isEmailExists = (email: string, role: "READER" | "WRITER") =>
 ({
-	WRITER: readWriters().some((writer: Writer) => writer.getEmail() === email),
-	READER: readReaders().some((reader: Reader) => reader.getEmail() === email),
+	WRITER: readWriters().some(({ email }: Writer) => email === iEmail),
+	READER: readReaders().some(({ email }: Reader) => email === iEmail),
 }[role]);
 
 export const isPasswordCorrect = (
-	password: string,
+	iPassword: string,
 	role: "READER" | "WRITER"
 ) =>
 ({
 	WRITER: readWriters().some(
-		(writer: Writer) => writer.getPassword() === password
+		({ password }: Writer) => password === iPassword
 	),
 	READER: readReaders().some(
-		(reader: Reader) => reader.getPassword() === password
+		({ password }: Reader) => password === iPassword
 	),
 }[role]);
 
-export const writeUser = (user: Writer | Reader, role: "READER" | "WRITER") => {
+export const writeUser = (email: string, password: string, nationality: string, role: "READER" | "WRITER") => {
 	let array: Writer[] | Reader[] = [];
 	let uri: string = '';
 	({
-		WRITER: () => { array = readWriters(); array.push(user as Writer); uri = writersURI; },
-		READER: () => { array = readReaders(); array.push(user as Reader); uri = readersURI; },
+		WRITER: () => { array = readWriters(); array.push(new Writer(email, password, nationality)); uri = writersURI; },
+		READER: () => { array = readReaders(); array.push(new Reader(email, password, nationality)); uri = readersURI; },
 	})[role]();
 
 	fs.writeFileSync(uri, JSON.stringify(array, null, 2))
+}
+
+export const writeToken = (iEmail: string, role: "READER" | "WRITER"): string => {
+	let array: Writer[] | Reader[] = [];
+	let uri: string = '';
+	const token = v4();
+	({
+		WRITER: () => { array = readWriters(); array.find(({ email }: Writer) => email === iEmail)!.token = token; uri = writersURI; },
+		READER: () => { array = readReaders(); array.find(({ email }: Reader) => email === iEmail)!.token = token; uri = readersURI; },
+	})[role]();
+
+	fs.writeFileSync(uri, JSON.stringify(array, null, 2))
+	return token;
 }
 
 export const writeBook = (title:string,price:number,launchDate:string,genre:string,description:string,authors:string[],editors:string[]) => {
