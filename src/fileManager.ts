@@ -98,6 +98,13 @@ export const makeOrder = (uId: string, order: Order) => {
 	const readers = readReaders();
 };
 
+
+export const isBookExists = (bookId: string): boolean => {
+	const books = readBooks();
+	return books.some(({ getId }) => getId() === bookId)
+}
+
+
 export const isEmailExists = (email: string, role: "READER" | "WRITER") =>
 ({
 	WRITER: readWriters().some((writer: Writer) => writer.getEmail() === email),
@@ -126,4 +133,28 @@ export const writeUser = (user: Writer | Reader, role: "READER" | "WRITER") => {
 	})[role]();
 
 	fs.writeFileSync(uri, JSON.stringify(array, null, 2))
+}
+
+export const writeBook = (title:string,price:number,launchDate:string,genre:string,description:string,authors:string[],editors:string[]) => {
+	let newBooks = readBooks();
+	newBooks.push(new Book(title,price,0,launchDate,genre,description,authors,editors))
+	fs.writeFileSync(booksURI, JSON.stringify(newBooks, null, 2))
+}
+
+export const deleteBook = (iId: string): void  => {
+	let books = readBooks();
+	books = books.filter(({getId}) => getId() !== iId)
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
+}	
+
+export const editBook = (bId: string, title: string, price: number, description: string): void => {
+	let books = readBooks();
+	books.map((b: Book) => {
+		if (b.getId() === bId) {
+			b.setTitle(title)
+			b.setPrice(price)
+			b.setDescription(description)
+		}
+	})
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
