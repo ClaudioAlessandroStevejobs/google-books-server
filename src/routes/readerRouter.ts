@@ -4,16 +4,13 @@ import { getBookById, getReaderById } from '../fileManager';
 import { Order } from '../interfaces/Order';
 import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
-const router = Router();
+const router = Router({ mergeParams: true });
 
 //vedere i writer
 router.get('/',
-    param('id').isUUID(),
-    validationMiddleware,
-    readerAuthMiddleware,
-    (req: Request, res: Response) => {
-        res.status(200).json(getReaderById(req.params.id));
-    })
+    // param('id').isUUID().withMessage('Invalid id'),
+    // validationMiddleware,
+    ({ params: { rId } }: Request, res: Response) => { return res.status(200).json(getReaderById(rId)) })
 
 //vedere i libri
 router.get('/books',
