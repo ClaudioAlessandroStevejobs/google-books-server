@@ -3,12 +3,31 @@
     "_email": "test1@test.com",
     "_password": "193433706",
     "_nationality": "Rome",
-    "_fund": 990,
-    "_booksIds": [
-      "4e5003b6-ba73-4c72-b377-b313240f11fc"
-    ],
+    "_fund": 1,
+    "_booksIds": [],
     "_orders": [],
-    "_coupons": [],
+    "_coupons": [
+      {
+        "id": "e98fe6ee-5b33-421a-96d4-13766e292270",
+        "money": 3,
+        "deadline": "02/11/2021"
+      },
+      {
+        "id": "20939cf7-ddac-4c1b-a886-4934285ed3f8",
+        "money": 3,
+        "deadline": "02/11/2021"
+      },
+      {
+        "id": "5723d2f4-7c02-44e1-82ba-4390b47a5ae5",
+        "money": 3,
+        "deadline": "02/11/2021"
+      },
+      {
+        "id": "73f02fa4-151b-43f8-a28b-b3f9ae3fede5",
+        "money": 10,
+        "deadline": "02/11/2021"
+      }
+    ],
     "_id": "267a6e9e-014d-4957-b3a4-e9e591128637",
     "_token": "22f4f3f5-6a00-4af1-8674-1d5eb565a729"
   },
@@ -19,7 +38,13 @@
     "_fund": 0,
     "_booksIds": [],
     "_orders": [],
-    "_coupons": [],
+    "_coupons": [
+      {
+        "id": "c77a45ed-717e-4093-8028-e97aaf7010d8",
+        "money": 1,
+        "deadline": "02/11/2021"
+      }
+    ],
     "_id": "65514b5f-97c8-4ded-97fc-7f88c5c6782c"
   },
   {

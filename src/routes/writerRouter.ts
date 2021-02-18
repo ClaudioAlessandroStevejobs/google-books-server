@@ -4,18 +4,15 @@ import { getWriterById, writeBook, isBookExists, deleteBook, editBook, } from ".
 import { validationMiddleware } from "../middlewares/validationMiddleware";
 const router = Router({ mergeParams: true });
 
-
-
 router.get('/',
-    validationMiddleware,
-    ({ params: { wId } }: Request, res: Response) => {
-        res.status(200).json(getWriterById(wId));
-    })
+    ({ params: { wId } }: Request, res: Response) =>
+        res.status(200).json(getWriterById(wId))
+)
 
 router.post(
     '/book',
     body('title').isString().notEmpty().withMessage('Invalid title'),
-    body('price').isNumeric(),
+    body('price').isNumeric().withMessage('Invalid price'),
     body('genre').isString().notEmpty().withMessage('Invalid genre'),
     body('description').isString().notEmpty().withMessage('Invalid description'),
     body('editors').isArray().notEmpty().withMessage('Invalid editors'),
@@ -30,17 +27,17 @@ router.delete('/book',
     validationMiddleware,
     ({ body: { id } }: Request, res: Response) => {
         if (!isBookExists(id)) return res.status(404).json('Book not found')
-        deleteBook(id)
-        return res.status(204).json('Book deleted')
+        deleteBook(id);
+        return res.status(204).json('Book deleted');
     })
 
 router.put('/book',
     validationMiddleware,
     body('title').isString().notEmpty().withMessage('Invalid title'),
-    body('price').isNumeric(),
+    body('price').isNumeric().withMessage('Invalid price'),
     body('description').isString().notEmpty().withMessage('Invalid description'),
     ({ body: { id, title, price, description } }: Request, res: Response) => {
-        if (!isBookExists(id)) return res.status(404).json('Book not found')
+        if (!isBookExists(id)) return res.status(404).json('Book not found');
         editBook(id, title, price, description)
         return res.status(200).json('Book edited')
     })

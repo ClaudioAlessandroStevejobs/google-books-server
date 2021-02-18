@@ -7,6 +7,7 @@ import { Writer } from "./models/Writer";
 import { User } from "./interfaces/User";
 import { Order } from "./interfaces/Order";
 import { Review } from "./interfaces/Review";
+import { Coupon } from "./interfaces/Coupon";
 
 const booksURI = `${process.cwd()}/files/books.json`;
 const writersURI = `${process.cwd()}/files/writers.json`;
@@ -86,9 +87,9 @@ export const getReaderById = (iId: string): Reader | undefined =>
 
 export const areSomeBookIUndefined = (inventory: string[]) => inventory.map(bId => getBookById(bId)).some(b => b === undefined);
 
-export const isTooExpensive = (rId: string, inventory: string[]) => inventory.map(bId => getBookById(bId)!.price).reduce((acc: number, curr: number) => acc + curr) < getReaderById(rId)!.fund;
+export const isTooExpensive = (rId: string, inventory: string[]) => inventory.map(bId => getBookById(bId)!.price).reduce((acc: number, curr: number) => acc + curr) > getReaderById(rId)!.fund;
 
-export const haveAlready = (rId: string, inventory: string[]) => inventory.some(bId => getReaderById(rId)!.booksIds.includes(rId));
+export const haveAlready = (rId: string, inventory: string[]) => inventory.some(bId => getReaderById(rId)!.booksIds.includes(bId));
 
 export const makeOrder = (rId: string, inventory: string[]) => {
 	let books = readBooks();
@@ -212,7 +213,7 @@ export const editReviews = (bId: string, rId: string, title: string, text: strin
 	let books = readBooks();
 	books.map((b: Book) => {
 		if (b.id === bId) {
-			const review = b.reviews.find((r: Review) => r.id === rId)!
+			const review = b.reviews.find((r: Review) => r.id === rId)!;
 			review.title = title,
 				review.text = text,
 				review.valutation = valutation
@@ -221,3 +222,15 @@ export const editReviews = (bId: string, rId: string, title: string, text: strin
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
 
+export const writeCoupon = (rId: string, money: number, otherRId?: string) => {
+	let readers = readReaders();
+	const coupon: Coupon = {
+		id: v4(),
+		money,
+		deadline: moment().subtract(10, 'days').add(3, 'days').calendar()
+	}
+	const reader = readers.find(r => r.id === rId)!
+	reader.fund -= money;
+	otherRId ? readers.find(r => r.id === otherRId)!.addCoupon(coupon) : reader.addCoupon(coupon);
+	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2));
+}
