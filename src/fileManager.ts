@@ -6,6 +6,7 @@ import { Reader } from "./models/Reader";
 import { Writer } from "./models/Writer";
 import { User } from "./interfaces/User";
 import { Order } from "./interfaces/Order";
+import { Review } from "./interfaces/Review";
 
 const booksURI = `${process.cwd()}/files/books.json`;
 const writersURI = `${process.cwd()}/files/writers.json`;
@@ -196,3 +197,27 @@ export const getBooks = (id: string, role: "READER" | "WRITER") =>
 		WRITER: getWriterById(id)!.booksIds,
 		READER: getReaderById(id)!.booksIds
 	}[role]).map(bId => getBookById(bId)!);
+
+
+export const writeReviews = (bId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5): void => {
+	const wReview: Review = { id: v4(), title, date: moment().subtract(10, 'days').calendar(), text, valutation }
+	let books: Book[] = readBooks();
+	books.map((b: Book) => {
+		if (b.id === bId) b.addReview(wReview)
+	})
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
+}
+
+export const editReviews = (bId: string, rId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5) => {
+	let books = readBooks();
+	books.map((b: Book) => {
+		if (b.id === bId) {
+			const review = b.reviews.find((r: Review) => r.id === rId)!
+			review.title = title,
+				review.text = text,
+				review.valutation = valutation
+		}
+	})
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
+}
+

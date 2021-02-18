@@ -41,5 +41,5 @@ export class Book {
 
 	get reviews() { return this._reviews };
 
-	addReviews = (iReview: Review) => { this._reviews.push(iReview) };
+	addReview = (iReview: Review) => { this._reviews.push(iReview) };
 }
