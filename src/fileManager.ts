@@ -1,11 +1,12 @@
+import fs from "fs";
+import moment from "moment";
+import { v4 } from "uuid";
 import { Book } from "./models/Book";
 import { Reader } from "./models/Reader";
 import { Writer } from "./models/Writer";
-import fs from "fs";
 import { User } from "./interfaces/User";
 import { Order } from "./interfaces/Order";
-import { v4 } from "uuid";
-import moment from "moment";
+
 const booksURI = `${process.cwd()}/files/books.json`;
 const writersURI = `${process.cwd()}/files/writers.json`;
 const readersURI = `${process.cwd()}/files/readers.json`;
@@ -18,18 +19,9 @@ const readersURI = `${process.cwd()}/files/readers.json`;
 export const readBooks = (): Book[] => {
 	const anyArray = JSON.parse(fs.readFileSync(booksURI).toString());
 	let bookArray: Book[] = [];
-	anyArray.map((book: any) => {
+	anyArray.map(({ _title, _price, _launchDate, _genre, _description, _authors, _editors, _soldCopies, _reviews, _id }: any) => {
 		bookArray.push(
-			new Book(
-				book.title,
-				book.price,
-				book.launchDate,
-				book.genre,
-				book.description,
-				book.authors,
-				book.editors,
-				book.reviews
-			)
+			new Book(_title, _price, _launchDate, _genre, _description, _authors, _editors, _soldCopies, _reviews, _id)
 		);
 	});
 	return bookArray;

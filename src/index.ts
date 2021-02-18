@@ -4,11 +4,10 @@ import writerRouter from "./routes/writerRouter";
 import readerRouter from "./routes/readerRouter";
 import bodyParser from "body-parser";
 import cors from "cors";
-import { writerAuthMiddleware, readerAuthMiddleware, allMiddleware, } from "./middlewares/authMiddlewares";
+import { writerAuthMiddleware, readerAuthMiddleware } from "./middlewares/authMiddlewares";
+
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.all('*', allMiddleware)
+const PORT = 3001;
 const options: cors.CorsOptions = {
 	allowedHeaders: [
 		"Origin",
@@ -22,11 +21,13 @@ const options: cors.CorsOptions = {
 	origin: "http://localhost:4200",
 	preflightContinue: false,
 };
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(options));
 app.use("/auth", authRouter);
 app.use("/writer/:wId", writerAuthMiddleware, writerRouter);
 app.use("/reader/:rId", readerAuthMiddleware, readerRouter);
-const PORT = 3001;
 
 app.listen(PORT, () => {
 	console.log(`Server start on ${PORT}`);

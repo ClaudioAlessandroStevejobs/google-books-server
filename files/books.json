@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "_title": "testBook1",
+    "_price": 10,
+    "_launchDate": "02/08/2021",
+    "_genre": "boh",
+    "_description": "Bellissimo",
+    "_authors": [
+      "7c3c188c-4baa-461b-b3ee-e82b6d007cce"
+    ],
+    "_editors": [],
+    "_soldCopies": 0,
+    "_reviews": [],
+    "_id": "c590756a-4157-4e3e-90de-a4535b489038"
+  },
+  {
+    "_title": "testBook2",
+    "_price": 10,
+    "_launchDate": "02/08/2021",
+    "_genre": "boh",
+    "_description": "Bellissimo",
+    "_authors": [
+      "7c3c188c-4baa-461b-b3ee-e82b6d007cce",
+      "lui"
+    ],
+    "_editors": [],
+    "_soldCopies": 0,
+    "_reviews": [],
+    "_id": "275219b6-9540-4113-9874-e68864bb7b8b"
+  }
+]
