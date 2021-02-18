@@ -39,7 +39,7 @@ export class Reader {
 	set token(iToken) { this._token = iToken };
 
 
-	addBooksIds = (...bIds: string[]) => {
+	addBooksIds = (bIds: string[]) => {
 		bIds.map(bId => {
 			this.booksIds.push(bId);
 		})

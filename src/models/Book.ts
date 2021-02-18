@@ -7,7 +7,7 @@ export class Book {
 		private _launchDate: string,
 		private _genre: string,
 		private _description: string,
-		private _authors: string[],
+		private _author: string,
 		private _editors: string[],
 		private _soldCopies: number = 0,
 		private _reviews: Review[] = [],
@@ -33,7 +33,7 @@ export class Book {
 	get soldCopies() { return this._soldCopies };
 	set soldCopies(iSoldCopies: number) { this._soldCopies = iSoldCopies };
 
-	get authors() { return this._authors };
+	get author() { return this._author };
 
 
 	get editors() { return this._editors }

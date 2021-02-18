@@ -9,8 +9,8 @@ const router = Router({ mergeParams: true });
 router.get('/',
     validationMiddleware,
     ({ params: { wId } }: Request, res: Response) => {
-    res.status(200).json(getWriterById(wId));
-})
+        res.status(200).json(getWriterById(wId));
+    })
 
 router.post(
     '/book',
@@ -18,23 +18,21 @@ router.post(
     body('price').isNumeric(),
     body('genre').isString().notEmpty().withMessage('Invalid genre'),
     body('description').isString().notEmpty().withMessage('Invalid description'),
-    body('authors').isString().notEmpty().withMessage('Invalid authors'),
-    body('editors').isString().notEmpty().withMessage('Invalid editors'),
+    body('editors').isArray().notEmpty().withMessage('Invalid editors'),
     validationMiddleware,
-    ({ body: { title, price, genre, description, authors, editors }, params: { wId } }: Request, res: Response) => {
-        const trueAuthors: string[] = !authors ? [wId] : [wId, ...authors];
-        if (!isBookExists(wId)) return res.status(404).json('Book not found')
-        res.status(201).json(writeBook(title, price, genre, description, trueAuthors, editors));
+    ({ body: { title, price, genre, description, editors }, params: { wId } }: Request, res: Response) => {
+        // if (isBookExists(wId)) return res.status(404).json('Book not found')
+        return res.status(201).json(writeBook(title, price, genre, description, wId, editors));
     })
 
 router.delete('/book',
     param('id').isNumeric(),
     validationMiddleware,
     ({ body: { id } }: Request, res: Response) => {
-    if (!isBookExists(id)) return res.status(404).json('Book not found')
-    deleteBook(id)
-    return res.status(204).json('Book deleted')
-})
+        if (!isBookExists(id)) return res.status(404).json('Book not found')
+        deleteBook(id)
+        return res.status(204).json('Book deleted')
+    })
 
 router.put('/book',
     validationMiddleware,
@@ -42,10 +40,10 @@ router.put('/book',
     body('price').isNumeric(),
     body('description').isString().notEmpty().withMessage('Invalid description'),
     ({ body: { id, title, price, description } }: Request, res: Response) => {
-    if (!isBookExists(id)) return res.status(404).json('Book not found')
-    editBook(id, title, price, description)
-    return res.status(200).json('Book edited')
-})
+        if (!isBookExists(id)) return res.status(404).json('Book not found')
+        editBook(id, title, price, description)
+        return res.status(200).json('Book edited')
+    })
 
 // router.get('/earnings', (req: Request, res: Response) => {
 //     res.status(200).json(getWriterById(req.params.id))

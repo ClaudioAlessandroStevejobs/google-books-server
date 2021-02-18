@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
-import { getBookById, getReaderById } from '../fileManager';
+import { areSomeBookIUndefined, getBookById, getBooks, getReaderById, isTooExpensive, makeOrder } from '../fileManager';
 import { Order } from '../interfaces/Order';
 import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
@@ -8,35 +8,29 @@ const router = Router({ mergeParams: true });
 
 //vedere i writer
 router.get('/',
-    // param('id').isUUID().withMessage('Invalid id'),
-    // validationMiddleware,
-    ({ params: { rId } }: Request, res: Response) => { return res.status(200).json(getReaderById(rId)) })
+    ({ params: { rId } }: Request, res: Response) => res.status(200).json(getBooks(rId, 'READER')))
 
 //vedere i libri
 router.get('/books',
-    param('id').isUUID(),
-    validationMiddleware,
-    readerAuthMiddleware,
-    (req: Request, res: Response) => {
-        res.status(200).json(getBookById(req.params.id));
-    })
+    (req: Request, res: Response) => res.status(200).json(getBookById(req.params.id)))
 
 //vedere le recensioni dei libri
-router.get('/reviews',
-    param('id').isUUID(),
-    validationMiddleware,
-    readerAuthMiddleware,
-    (req: Request, res: Response) => {
-        // res.status(200).json(getReviewsById(req.params.id))
-    })
+// router.get('/reviews',
+//     param('id').isUUID(),
+//     validationMiddleware,
+//     readerAuthMiddleware,
+//     (req: Request, res: Response) => {
+//         // res.status(200).json(getReviewsById(req.params.id))
+//     })
 
 //fare un ordine
-router.post('/orders',
-    body('orders').isString().withMessage('Invalid order'),
+router.post('/order',
     validationMiddleware,
     readerAuthMiddleware,
-    ({ body: { inventory = [] } }: Request, res: Response) => {
-        // addOrder(order);
+    ({ body: { inventory }, params: { rId } }: Request, res: Response) => {
+        if (areSomeBookIUndefined(inventory)) return res.status(404).json({ message: 'Some books not found' });
+        if (isTooExpensive(rId, inventory)) return res.status(403).json({ message: 'Not enough money' });
+        makeOrder(rId, inventory);
         return res.status(201).json({ message: 'order effected' })
     })
 

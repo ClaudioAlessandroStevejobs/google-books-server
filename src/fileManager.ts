@@ -19,9 +19,9 @@ const readersURI = `${process.cwd()}/files/readers.json`;
 export const readBooks = (): Book[] => {
 	const anyArray = JSON.parse(fs.readFileSync(booksURI).toString());
 	let bookArray: Book[] = [];
-	anyArray.map(({ _title, _price, _launchDate, _genre, _description, _authors, _editors, _soldCopies, _reviews, _id }: any) => {
+	anyArray.map(({ _title, _price, _launchDate, _genre, _description, _author, _editors, _soldCopies, _reviews, _id }: any) => {
 		bookArray.push(
-			new Book(_title, _price, _launchDate, _genre, _description, _authors, _editors, _soldCopies, _reviews, _id)
+			new Book(_title, _price, _launchDate, _genre, _description, _author, _editors, _soldCopies, _reviews, _id)
 		);
 	});
 	return bookArray;
@@ -83,9 +83,38 @@ export const getReaderById = (iId: string): Reader | undefined =>
 	readReaders().find(({ id }: Reader) => id === iId);
 
 
+export const areSomeBookIUndefined = (inventory: string[]) => inventory.map(bId => getBookById(bId)).some(b => b === undefined);
 
-export const makeOrder = (uId: string, order: Order) => {
-	const readers = readReaders();
+export const isTooExpensive = (rId: string, inventory: string[]) => inventory.map(bId => getBookById(bId)!.price).reduce((acc: number, curr: number) => acc + curr) < getReaderById(rId)!.fund;
+
+export const haveAlready = (rId: string, inventory: string[]) => inventory.some(bId => getReaderById(rId)!.booksIds.includes(rId));
+
+export const makeOrder = (rId: string, inventory: string[]) => {
+	let books = readBooks();
+	let readers = readReaders();
+	let writers = readWriters();
+	let total: number = 0;
+	books = books.map(b => {
+		if (inventory.includes(b.id)) b.soldCopies++;
+		return b;
+	})
+	writers = inventory.map(bId => {
+		const book = getBookById(bId)!;
+		const author = getWriterById(book.author)!;
+		author.fund += book.price;
+		total += book.price;
+		return author;
+	})
+	readers = readReaders().map((r: Reader) => {
+		if (r.id === rId) {
+			r.fund = r.fund - total;
+			r.addBooksIds(inventory);
+		}
+		return r
+	});
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
+	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2))
+	fs.writeFileSync(writersURI, JSON.stringify(writers, null, 2))
 };
 
 
@@ -138,16 +167,16 @@ export const writeToken = (iEmail: string, role: "READER" | "WRITER"): string =>
 	return token;
 }
 
-export const writeBook = (title: string, price: number, genre: string, description: string, authors: string[], editors: string[]) => {
+export const writeBook = (title: string, price: number, genre: string, description: string, author: string, editors: string[]) => {
 	let newBooks = readBooks();
-	newBooks.push(new Book(title, price, moment().subtract(10, 'days').calendar(), genre, description, authors, editors))
+	newBooks.push(new Book(title, price, moment().subtract(10, 'days').calendar(), genre, description, author, editors))
 	fs.writeFileSync(booksURI, JSON.stringify(newBooks, null, 2))
 }
 
 export const deleteBook = (iId: string): void => {
 	let books = readBooks();
-	books = books.filter(({ id }: Book) => id !== iId)
-	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
+	books = books.filter(({ id }: Book) => id !== iId);
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2));
 }
 
 export const editBook = (bId: string, title: string, price: number, description: string): void => {
@@ -159,5 +188,11 @@ export const editBook = (bId: string, title: string, price: number, description:
 			b.description = description
 		}
 	})
-	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2));
 }
+
+export const getBooks = (id: string, role: "READER" | "WRITER") =>
+	({
+		WRITER: getWriterById(id)!.booksIds,
+		READER: getReaderById(id)!.booksIds
+	}[role]).map(bId => getBookById(bId)!);
