@@ -1,13 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
-import { areSomeBookIUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReviews, getBookById, getReaderById, isBookExists, writeReviews, haveAlready, writeCoupon } from '../fileManager';
+import { areSomeBookIUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview, getBookById, getReaderById, isBookExists, writeReviews, haveAlready, writeCoupon } from '../fileManager';
 import { } from '../fileManager';
 import { Order } from '../interfaces/Order';
 import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 const router = Router({ mergeParams: true });
 
-//vedere i writer
+//vedere i reader
 router.get('/',
     ({ params: { rId } }: Request, res: Response) => res.status(200).json(getBooks(rId, 'READER')))
 
@@ -55,14 +55,15 @@ router.post('/gift', ({ body: { otherRId, money }, params: { rId } }: Request, r
 
 //scrivere una recensione di un libro
 router.post('/review',
-    body('id').isUUID(),
-    body('date').isString().withMessage('Invalid date'),
+    body('bId').isUUID().withMessage('Invalid bId'),
     body('text').isString().withMessage('Invalid text'),
-    body('valutation').isString().withMessage('Invalid valutation'),
+    body('valutation').isNumeric().withMessage('Invalid valutation'),
     validationMiddleware,
     readerAuthMiddleware,
-    ({ body: { id, date, text, valutation } }: Request, res: Response) => {
-        return res.status(201).json(writeReviews(id, date, text, valutation))
+    ({ body: { bId, title, text, valutation }, params: { rId } }: Request, res: Response) => {
+        if (!getBookById(bId)) return res.status(404).json({ message: 'Book not found' });
+        writeReviews(bId, rId, title, text, valutation);
+        return res.status(201).json('Review added');
 
     })
 
@@ -71,11 +72,12 @@ router.post('/refils', ({ body: { money } }: Request, res: Response) => { })
 
 
 //modificare una recensione
-router.put('/review', ({ body: { bId, reviewId, title, text, valutation } }: Request, res: Response) => {
-    if (!writeReviews) return res.status(204).json('Review not exist');
-    editReviews(bId, reviewId, title, text, valutation);
-    return res.status(200).json('Review edited')
-})
+router.put('/review',
+    ({ body: { bId, reviewId, title, text, valutation } }: Request, res: Response) => {
+        if (!isBookExists(reviewId)) return res.status(404).json('Review not exists');
+        editReview(bId, reviewId, title, text, valutation);
+        return res.status(200).json('Review edited');
+    })
 
 
 //eliminare un libro
@@ -88,5 +90,10 @@ router.delete('/books',
         deleteBook(id)
         return res.status(204).json('Book deleted')
     })
+
+
+router.delete('/review', (req: Request, res: Response) => {
+
+})
 
 export default router;
