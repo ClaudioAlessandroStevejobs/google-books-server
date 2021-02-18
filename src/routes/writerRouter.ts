@@ -1,31 +1,47 @@
 import { Router, Request, Response } from "express";
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 import { getWriterById, writeBook, isBookExists, deleteBook, editBook, } from "../fileManager";
+import { validationMiddleware } from "../middlewares/validationMiddleware";
 const router = Router({ mergeParams: true });
 
-// Aggiungere express validator
-// Aggiungere bookExist nella post
 
 
-
-router.get('/', ({ params: { wId } }: Request, res: Response) => {
+router.get('/',
+    validationMiddleware,
+    ({ params: { wId } }: Request, res: Response) => {
     res.status(200).json(getWriterById(wId));
 })
 
 router.post(
     '/book',
+    body('title').isString().notEmpty().withMessage('Invalid title'),
+    body('price').isNumeric(),
+    body('genre').isString().notEmpty().withMessage('Invalid genre'),
+    body('description').isString().notEmpty().withMessage('Invalid description'),
+    body('authors').isString().notEmpty().withMessage('Invalid authors'),
+    body('editors').isString().notEmpty().withMessage('Invalid editors'),
+    validationMiddleware,
     ({ body: { title, price, genre, description, authors, editors }, params: { wId } }: Request, res: Response) => {
         const trueAuthors: string[] = !authors ? [wId] : [wId, ...authors];
+        if (!isBookExists(wId)) return res.status(404).json('Book not found')
         res.status(201).json(writeBook(title, price, genre, description, trueAuthors, editors));
     })
 
-router.delete('/book', ({ body: { id } }: Request, res: Response) => {
+router.delete('/book',
+    param('id').isNumeric(),
+    validationMiddleware,
+    ({ body: { id } }: Request, res: Response) => {
     if (!isBookExists(id)) return res.status(404).json('Book not found')
     deleteBook(id)
     return res.status(204).json('Book deleted')
 })
 
-router.put('/book', ({ body: { id, title, price, description } }: Request, res: Response) => {
+router.put('/book',
+    validationMiddleware,
+    body('title').isString().notEmpty().withMessage('Invalid title'),
+    body('price').isNumeric(),
+    body('description').isString().notEmpty().withMessage('Invalid description'),
+    ({ body: { id, title, price, description } }: Request, res: Response) => {
     if (!isBookExists(id)) return res.status(404).json('Book not found')
     editBook(id, title, price, description)
     return res.status(200).json('Book edited')
