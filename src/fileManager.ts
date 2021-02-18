@@ -5,6 +5,7 @@ import fs from "fs";
 import { User } from "./interfaces/User";
 import { Order } from "./interfaces/Order";
 import { v4 } from "uuid";
+import moment from "moment";
 const booksURI = `${process.cwd()}/files/books.json`;
 const writersURI = `${process.cwd()}/files/writers.json`;
 const readersURI = `${process.cwd()}/files/readers.json`;
@@ -81,13 +82,15 @@ export const readReaders = (): Reader[] => {
 };
 
 export const getBookById = (iId: string): Book | undefined =>
-	readBooks().find((book: Book) => book.getId() === iId);
+	readBooks().find(({ id }: Book) => id === iId);
 
 export const getWriterById = (iId: string): Writer | undefined =>
 	readWriters().find(({ id }: Writer) => id === iId);
 
 export const getReaderById = (iId: string): Reader | undefined =>
 	readReaders().find(({ id }: Reader) => id === iId);
+
+
 
 export const makeOrder = (uId: string, order: Order) => {
 	const readers = readReaders();
@@ -96,11 +99,11 @@ export const makeOrder = (uId: string, order: Order) => {
 
 export const isBookExists = (bookId: string): boolean => {
 	const books = readBooks();
-	return books.some(({ getId }) => getId() === bookId)
+	return books.some(({ id }) => id === bookId)
 }
 
 
-export const isEmailExists = (email: string, role: "READER" | "WRITER") =>
+export const isEmailExists = (iEmail: string, role: "READER" | "WRITER") =>
 ({
 	WRITER: readWriters().some(({ email }: Writer) => email === iEmail),
 	READER: readReaders().some(({ email }: Reader) => email === iEmail),
@@ -143,25 +146,25 @@ export const writeToken = (iEmail: string, role: "READER" | "WRITER"): string =>
 	return token;
 }
 
-export const writeBook = (title:string,price:number,launchDate:string,genre:string,description:string,authors:string[],editors:string[]) => {
+export const writeBook = (title: string, price: number, genre: string, description: string, authors: string[], editors: string[]) => {
 	let newBooks = readBooks();
-	newBooks.push(new Book(title,price,0,launchDate,genre,description,authors,editors))
+	newBooks.push(new Book(title, price, moment().subtract(10, 'days').calendar(), genre, description, authors, editors))
 	fs.writeFileSync(booksURI, JSON.stringify(newBooks, null, 2))
 }
 
-export const deleteBook = (iId: string): void  => {
+export const deleteBook = (iId: string): void => {
 	let books = readBooks();
-	books = books.filter(({getId}) => getId() !== iId)
+	books = books.filter(({ id }: Book) => id !== iId)
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
-}	
+}
 
 export const editBook = (bId: string, title: string, price: number, description: string): void => {
 	let books = readBooks();
 	books.map((b: Book) => {
-		if (b.getId() === bId) {
-			b.setTitle(title)
-			b.setPrice(price)
-			b.setDescription(description)
+		if (b.id === bId) {
+			b.title = title
+			b.price = price
+			b.description = description
 		}
 	})
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
