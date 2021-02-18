@@ -10,7 +10,16 @@
       "Feltrinelli"
     ],
     "_soldCopies": 1,
-    "_reviews": [],
+    "_reviews": [
+      {
+        "id": "a6fea191-22fc-4927-8ffd-f81eb3769262",
+        "rId": "74f2f1c8-83c3-475c-8672-fa32ca46c5e8",
+        "title": "faccio 3 put",
+        "date": "02/08/2021",
+        "text": "sto facendo 4 put",
+        "valutation": 1
+      }
+    ],
     "_id": "4e5003b6-ba73-4c72-b377-b313240f11fc"
   }
 ]

@@ -180,6 +180,7 @@ export const deleteBook = (iId: string): void => {
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2));
 }
 
+
 export const editBook = (bId: string, title: string, price: number, description: string): void => {
 	let books = readBooks();
 	books.map((b: Book) => {
@@ -199,8 +200,8 @@ export const getBooks = (id: string, role: "READER" | "WRITER") =>
 	}[role]).map(bId => getBookById(bId)!);
 
 
-export const writeReviews = (bId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5): void => {
-	const wReview: Review = { id: v4(), title, date: moment().subtract(10, 'days').calendar(), text, valutation }
+export const writeReviews = (bId: string, rId: string ,title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5): void => {
+	const wReview: Review = { id: v4(), rId, title, date: moment().subtract(10, 'days').calendar(), text, valutation }
 	let books: Book[] = readBooks();
 	books.map((b: Book) => {
 		if (b.id === bId) b.addReview(wReview)
@@ -208,11 +209,11 @@ export const writeReviews = (bId: string, title: string, text: string, valutatio
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
 
-export const editReviews = (bId: string, rId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5) => {
+export const editReview = (bId: string, rId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5) => {
 	let books = readBooks();
 	books.map((b: Book) => {
 		if (b.id === bId) {
-			const review = b.reviews.find((r: Review) => r.id === rId)!
+			const review = b.reviews.find((r: Review) => r.id === rId)!;
 			review.title = title,
 				review.text = text,
 				review.valutation = valutation
@@ -221,3 +222,7 @@ export const editReviews = (bId: string, rId: string, title: string, text: strin
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
 
+export const isReviewExist = (rId:string, bId:string):boolean => 
+	getBookById(bId)!.reviews.some((r: Review) => r.id === rId);
+
+//deletRew

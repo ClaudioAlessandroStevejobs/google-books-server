@@ -13,23 +13,14 @@
     "_token": "22f4f3f5-6a00-4af1-8674-1d5eb565a729"
   },
   {
-    "_email": "test2@test.com",
-    "_password": "193433706",
-    "_nationality": "Rome",
+    "_email": "prova2@gmail.com",
+    "_password": "3762205709",
+    "_nationality": "Turca",
     "_fund": 0,
     "_booksIds": [],
     "_orders": [],
     "_coupons": [],
-    "_id": "65514b5f-97c8-4ded-97fc-7f88c5c6782c"
-  },
-  {
-    "_email": "test3@test.com",
-    "_password": "193433706",
-    "_nationality": "Rome",
-    "_fund": 0,
-    "_booksIds": [],
-    "_orders": [],
-    "_coupons": [],
-    "_id": "8ee97c89-a70c-4041-ad81-19125b682ce5"
+    "_id": "74f2f1c8-83c3-475c-8672-fa32ca46c5e8",
+    "_token": "0b79659b-da9f-4a1b-bdeb-01ed3c297c47"
   }
 ]
