@@ -1,40 +1,29 @@
 import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
-import { areSomeBookIUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview, getBookById, getReaderById, isBookExists, writeReviews, haveAlready, writeCoupon } from '../fileManager';
-import { } from '../fileManager';
-import { Order } from '../interfaces/Order';
+import {
+    areSomeBookIUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview,
+    getBookById, getReaderById, isBookExists, writeReviews, haveAlready, writeCoupon, refil
+} from '../fileManager';
 import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 const router = Router({ mergeParams: true });
 
-//vedere i reader
-router.get('/',
-    ({ params: { rId } }: Request, res: Response) => res.status(200).json(getBooks(rId, 'READER')))
 
-//vedere i libri
-router.get('/books',
-    (req: Request, res: Response) => res.status(200).json(getBookById(req.params.id)))
+router.get('/', ({ params: { rId } }: Request, res: Response) => res.status(200).json(getReaderById(rId)))
 
-//vedere le recensioni dei libri
-// router.get('/reviews',
-//     param('id').isUUID(),
-//     validationMiddleware,
-//     readerAuthMiddleware,
-//     (req: Request, res: Response) => {
-//         // res.status(200).json(getReviewsById(req.params.id))
-//     })
+router.get('/books', ({ params: { rId } }: Request, res: Response) => res.status(200).json(getBooks(rId, 'READER')))
 
-//fare un ordine
 router.post('/order',
     validationMiddleware,
     readerAuthMiddleware,
     ({ body: { inventory }, params: { rId } }: Request, res: Response) => {
         if (areSomeBookIUndefined(inventory)) return res.status(404).json({ message: 'Some books not found' });
         if (isTooExpensive(rId, inventory)) return res.status(403).json({ message: 'Not enough money' });
-        if (haveAlready(rId, inventory)) return res.status(403).json({ message: 'Have already book' })
+        if (haveAlready(rId, inventory)) return res.status(403).json({ message: 'Have already book' });
         makeOrder(rId, inventory);
-        return res.status(201).json({ message: 'Order effected' })
-    })
+        return res.status(201).json({ message: 'Order effected' });
+    }
+)
 
 router.post('/coupon',
     body('money').isNumeric().withMessage('Invalid money'),
@@ -46,12 +35,17 @@ router.post('/coupon',
     }
 )
 
-router.post('/gift', ({ body: { otherRId, money }, params: { rId } }: Request, res: Response) => {
-    if (!getReaderById(otherRId)) return res.status(404).json({ message: 'Other reader not found' });
-    if (money > getReaderById(rId)!.fund) return res.status(403).json({ message: 'Not enough money' });
-    writeCoupon(rId, money, otherRId);
-    return res.status(201).json({ message: 'Coupon gifted' });
-})
+router.post('/gift',
+    body('money').isNumeric().withMessage('Invalid money'),
+    body('otherRId').isUUID().withMessage('Invalid other id'),
+    validationMiddleware,
+    ({ body: { otherRId, money }, params: { rId } }: Request, res: Response) => {
+        if (!getReaderById(otherRId)) return res.status(404).json({ message: 'Other reader not found' });
+        if (money > getReaderById(rId)!.fund) return res.status(403).json({ message: 'Not enough money' });
+        writeCoupon(rId, money, otherRId);
+        return res.status(201).json({ message: 'Coupon gifted' });
+    }
+)
 
 //scrivere una recensione di un libro
 router.post('/review',
@@ -65,22 +59,26 @@ router.post('/review',
         writeReviews(bId, rId, title, text, valutation);
         return res.status(201).json('Review added');
 
-    })
+    }
+)
 
-//ricaricare il conto
-router.post('/refils', ({ body: { money } }: Request, res: Response) => { })
+router.post('/refils',
+    body('money').isNumeric().withMessage('Invalid money'),
+    validationMiddleware,
+    ({ body: { money }, params: { rId } }: Request, res: Response) => {
+        refil(money, rId);
+        return res.status(201).json({ message: 'Refil' });
+    }
+)
 
-
-//modificare una recensione
 router.put('/review',
     ({ body: { bId, reviewId, title, text, valutation } }: Request, res: Response) => {
         if (!isBookExists(reviewId)) return res.status(404).json('Review not exists');
         editReview(bId, reviewId, title, text, valutation);
         return res.status(200).json('Review edited');
-    })
+    }
+)
 
-
-//eliminare un libro
 router.delete('/books',
     param('id').isNumeric(),
     validationMiddleware,
@@ -89,11 +87,14 @@ router.delete('/books',
         if (!isBookExists(id)) return res.status(404).json('Book not found')
         deleteBook(id)
         return res.status(204).json('Book deleted')
-    })
+    }
+)
 
 
-router.delete('/review', (req: Request, res: Response) => {
+router.delete(
+    '/review', (req: Request, res: Response) => {
 
-})
+    }
+)
 
 export default router;

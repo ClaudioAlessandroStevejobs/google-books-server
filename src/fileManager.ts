@@ -95,6 +95,8 @@ export const makeOrder = (rId: string, inventory: string[]) => {
 	let books = readBooks();
 	let readers = readReaders();
 	let writers = readWriters();
+
+
 	let total: number = 0;
 	books = books.map(b => {
 		if (inventory.includes(b.id)) b.soldCopies++;
@@ -114,6 +116,13 @@ export const makeOrder = (rId: string, inventory: string[]) => {
 		}
 		return r
 	});
+	const order: Order = {
+		id: v4(),
+		date: moment().subtract(10, 'days').calendar(),
+		inventory,
+		total
+	}
+	readers.find((r: Reader) => r.id === rId)!.addOrder(order);
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2))
 	fs.writeFileSync(writersURI, JSON.stringify(writers, null, 2))
@@ -167,6 +176,27 @@ export const writeToken = (iEmail: string, role: "READER" | "WRITER"): string =>
 
 	fs.writeFileSync(uri, JSON.stringify(array, null, 2))
 	return token;
+}
+
+export const refil = (money: number, rId: string) => {
+	const readers = readReaders();
+	readers.find(r => r.id === rId)!.fund += money;
+	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2))
+}
+
+export const deleteToken = (iToken: string) => {
+	const writers = readWriters();
+	const readers = readReaders();
+	const writer = writers.find(({ token }: Writer) => token === iToken);
+	const reader = readers.find(({ token }: Reader) => token === iToken);
+	if (writer) {
+		writer.token = undefined;
+		fs.writeFileSync(writersURI, JSON.stringify(writers, null, 2));
+	} if (reader) {
+		reader.token = undefined;
+		fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2));
+	}
+	return writer != undefined || reader != undefined;
 }
 
 export const writeBook = (title: string, price: number, genre: string, description: string, author: string, editors: string[]) => {

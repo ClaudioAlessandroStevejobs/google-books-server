@@ -11,25 +11,9 @@
         "id": "e98fe6ee-5b33-421a-96d4-13766e292270",
         "money": 3,
         "deadline": "02/11/2021"
-      },
-      {
-        "id": "20939cf7-ddac-4c1b-a886-4934285ed3f8",
-        "money": 3,
-        "deadline": "02/11/2021"
-      },
-      {
-        "id": "5723d2f4-7c02-44e1-82ba-4390b47a5ae5",
-        "money": 3,
-        "deadline": "02/11/2021"
-      },
-      {
-        "id": "73f02fa4-151b-43f8-a28b-b3f9ae3fede5",
-        "money": 10,
-        "deadline": "02/11/2021"
       }
     ],
-    "_id": "267a6e9e-014d-4957-b3a4-e9e591128637",
-    "_token": "22f4f3f5-6a00-4af1-8674-1d5eb565a729"
+    "_id": "267a6e9e-014d-4957-b3a4-e9e591128637"
   },
   {
     "_email": "test2@test.com",
@@ -55,7 +39,6 @@
     "_booksIds": [],
     "_orders": [],
     "_coupons": [],
-    "_id": "74f2f1c8-83c3-475c-8672-fa32ca46c5e8",
-    "_token": "0b79659b-da9f-4a1b-bdeb-01ed3c297c47"
+    "_id": "74f2f1c8-83c3-475c-8672-fa32ca46c5e8"
   }
 ]

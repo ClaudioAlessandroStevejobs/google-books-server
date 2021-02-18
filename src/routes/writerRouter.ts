@@ -20,7 +20,8 @@ router.post(
     ({ body: { title, price, genre, description, editors }, params: { wId } }: Request, res: Response) => {
         // if (isBookExists(wId)) return res.status(404).json('Book not found')
         return res.status(201).json(writeBook(title, price, genre, description, wId, editors));
-    })
+    }
+)
 
 router.delete('/book',
     param('id').isNumeric(),
@@ -29,7 +30,8 @@ router.delete('/book',
         if (!isBookExists(id)) return res.status(404).json('Book not found')
         deleteBook(id);
         return res.status(204).json('Book deleted');
-    })
+    }
+)
 
 router.put('/book',
     validationMiddleware,
@@ -40,7 +42,8 @@ router.put('/book',
         if (!isBookExists(id)) return res.status(404).json('Book not found');
         editBook(id, title, price, description)
         return res.status(200).json('Book edited')
-    })
+    }
+)
 
 // router.get('/earnings', (req: Request, res: Response) => {
 //     res.status(200).json(getWriterById(req.params.id))
