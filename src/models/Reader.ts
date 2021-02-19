@@ -52,4 +52,10 @@ export class Reader {
 			this.coupons.push(coup);
 		})
 	}
+	// levare o usare coupon scaduto
+	deleteCoupon = (cId: string) => {
+		const coupon = this.coupons.find((coup: Coupon) => coup.id === cId)!;
+		const index = this.coupons.indexOf(coupon)
+		this.coupons.splice(index, 0);
+	}
 }

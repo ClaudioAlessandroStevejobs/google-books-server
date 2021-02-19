@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { body, param } from "express-validator";
-import { getWriterById, writeBook, isBookExists, deleteBook, editBook, } from "../fileManager";
+import { getWriterById, writeBook, isBookExists, deleteBook, editBook, getEarnings, } from "../fileManager";
 import { validationMiddleware } from "../middlewares/validationMiddleware";
 const router = Router({ mergeParams: true });
 
@@ -19,7 +19,8 @@ router.post(
     validationMiddleware,
     ({ body: { title, price, genre, description, editors }, params: { wId } }: Request, res: Response) => {
         // if (isBookExists(wId)) return res.status(404).json('Book not found')
-        return res.status(201).json(writeBook(title, price, genre, description, wId, editors));
+        writeBook(title, price, genre, description, wId, editors);
+        return res.status(201).json();
     }
 )
 
@@ -45,8 +46,8 @@ router.put('/book',
     }
 )
 
-// router.get('/earnings', (req: Request, res: Response) => {
-//     res.status(200).json(getWriterById(req.params.id))
-// })
+router.get('/earnings', ({ params: { wId } }: Request, res: Response) =>
+    res.status(200).json(getEarnings(wId))
+)
 
 export default router;

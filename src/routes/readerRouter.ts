@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
 import {
-    areSomeBookIUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview,
+    areSomeBookUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview,
     getBookById, getReaderById, isBookExists, writeReviews, haveAlready, writeCoupon, refil
 } from '../fileManager';
 import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
@@ -16,11 +16,11 @@ router.get('/books', ({ params: { rId } }: Request, res: Response) => res.status
 router.post('/order',
     validationMiddleware,
     readerAuthMiddleware,
-    ({ body: { inventory }, params: { rId } }: Request, res: Response) => {
-        if (areSomeBookIUndefined(inventory)) return res.status(404).json({ message: 'Some books not found' });
-        if (isTooExpensive(rId, inventory)) return res.status(403).json({ message: 'Not enough money' });
+    ({ body: { inventory, couponId }, params: { rId } }: Request, res: Response) => {
+        if (areSomeBookUndefined(inventory)) return res.status(404).json({ message: 'Some books not found' });
+        if (isTooExpensive(rId, inventory, couponId)) return res.status(403).json({ message: 'Not enough money' });
         if (haveAlready(rId, inventory)) return res.status(403).json({ message: 'Have already book' });
-        makeOrder(rId, inventory);
+        makeOrder(rId, inventory, couponId);
         return res.status(201).json({ message: 'Order effected' });
     }
 )
@@ -79,7 +79,7 @@ router.put('/review',
     }
 )
 
-router.delete('/books',
+router.delete('/book',
     param('id').isNumeric(),
     validationMiddleware,
     readerAuthMiddleware,

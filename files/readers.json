@@ -1,44 +1,40 @@
 [
   {
-    "_email": "test1@test.com",
+    "_email": "testr1@test.com",
     "_password": "193433706",
-    "_nationality": "Rome",
-    "_fund": 1,
-    "_booksIds": [],
-    "_orders": [],
-    "_coupons": [
+    "_nationality": "Italy",
+    "_fund": 990,
+    "_booksIds": [
+      "7340364c-0fca-42d1-8114-849cc64b60e4"
+    ],
+    "_orders": [
       {
-        "id": "e98fe6ee-5b33-421a-96d4-13766e292270",
-        "money": 3,
-        "deadline": "02/11/2021"
+        "id": "84225989-4ecc-40d3-986c-796fa503603a",
+        "date": "02/09/2021",
+        "inventory": [
+          "7340364c-0fca-42d1-8114-849cc64b60e4"
+        ],
+        "total": 10
       }
     ],
-    "_id": "267a6e9e-014d-4957-b3a4-e9e591128637"
-  },
-  {
-    "_email": "test2@test.com",
-    "_password": "193433706",
-    "_nationality": "Rome",
-    "_fund": 0,
-    "_booksIds": [],
-    "_orders": [],
     "_coupons": [
       {
-        "id": "c77a45ed-717e-4093-8028-e97aaf7010d8",
-        "money": 1,
-        "deadline": "02/11/2021"
+        "id": "27b9a191-309f-4408-a1f9-e82e5d61257d",
+        "money": 10,
+        "deadline": "02/12/2021"
       }
     ],
-    "_id": "65514b5f-97c8-4ded-97fc-7f88c5c6782c"
+    "_id": "b90c8276-fb2c-422e-9bda-261783391b4a",
+    "_token": "4139387f-bfea-4073-9537-c14b645162d1"
   },
   {
-    "_email": "test3@test.com",
+    "_email": "testr2@test.com",
     "_password": "193433706",
-    "_nationality": "Rome",
+    "_nationality": "Italy",
     "_fund": 0,
     "_booksIds": [],
     "_orders": [],
     "_coupons": [],
-    "_id": "74f2f1c8-83c3-475c-8672-fa32ca46c5e8"
+    "_id": "95e908dc-2c76-4fa5-8b03-68919e087e4d"
   }
 ]

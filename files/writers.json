@@ -1,10 +1,25 @@
 [
   {
-    "_email": "testw1@test.com",
+    "_email": "test1@test.com",
     "_password": "193433706",
-    "_nationality": "Rome",
+    "_nationality": "Italy",
     "_fund": 10,
-    "_booksIds": [],
-    "_id": "7c3c188c-4baa-461b-b3ee-e82b6d007cce"
+    "_booksIds": [
+      "7340364c-0fca-42d1-8114-849cc64b60e4",
+      "f4d0a989-dbd5-4132-bd57-25a76c22b80b"
+    ],
+    "_id": "d7fecbed-f48a-4745-8ac4-f50c1f44bbd6",
+    "_token": "f1d95595-4206-4494-8deb-31ea22c52156"
+  },
+  {
+    "_email": "test2@test.com",
+    "_password": "193433706",
+    "_nationality": "Italy",
+    "_fund": 0,
+    "_booksIds": [
+      "ba632a00-9b53-4f03-b729-db0c540eeaa4"
+    ],
+    "_id": "2354c9a5-be08-4eee-bdeb-e5b7e9de4336",
+    "_token": "9b687889-d85a-4c10-99c1-0c62ab7c5841"
   }
 ]

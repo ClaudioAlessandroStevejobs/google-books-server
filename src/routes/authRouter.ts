@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { body, header } from 'express-validator';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 import stringHash from 'string-hash';
-import { deleteToken, isEmailExists, isPasswordCorrect, writeToken, writeUser } from '../fileManager'
+import { deleteToken, getIdFromEmail, isEmailExists, isPasswordCorrect, writeToken, writeUser } from '../fileManager'
 
 const router = Router();
 
@@ -17,7 +17,8 @@ router.post('/register',
             return res.status(409).json({ message: 'Already exists' });
         writeUser(email, password, nationality, role);
         return res.status(201).json({ message: 'User registered', role });
-    })
+    }
+)
 
 router.post('/login',
     body('email').isEmail().normalizeEmail().withMessage('Invalid email'),
@@ -29,8 +30,9 @@ router.post('/login',
             return res.status(401).json({ message: 'Not authorized' });
         if (!isPasswordCorrect(password, role))
             return res.status(403).json({ message: 'Forbidden' });
-        return res.status(201).send(writeToken(email, role));
-    })
+        return res.status(201).json({ token: writeToken(email, role), id: getIdFromEmail(email, role) });
+    }
+)
 
 router.post('/logout',
     header('token').isString().notEmpty().withMessage('Invalid token / No user logged'),
