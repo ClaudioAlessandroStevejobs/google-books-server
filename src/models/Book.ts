@@ -42,4 +42,9 @@ export class Book {
 	get reviews() { return this._reviews };
 
 	addReview = (iReview: Review) => { this._reviews.push(iReview) };
+
+	deleteReview = (reviewId: string) => {
+		const review = this.reviews.find(({ id }: Review) => id === reviewId)!;
+		this.reviews.splice(this.reviews.indexOf(review), 1);
+	}
 }

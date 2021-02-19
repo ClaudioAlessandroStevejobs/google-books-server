@@ -3,7 +3,7 @@
     "_email": "test1@test.com",
     "_password": "193433706",
     "_nationality": "Italy",
-    "_fund": 10,
+    "_fund": 270,
     "_booksIds": [
       "7340364c-0fca-42d1-8114-849cc64b60e4",
       "f4d0a989-dbd5-4132-bd57-25a76c22b80b"
@@ -15,7 +15,7 @@
     "_email": "test2@test.com",
     "_password": "193433706",
     "_nationality": "Italy",
-    "_fund": 0,
+    "_fund": 20,
     "_booksIds": [
       "ba632a00-9b53-4f03-b729-db0c540eeaa4"
     ],

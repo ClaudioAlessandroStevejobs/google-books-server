@@ -3,29 +3,21 @@
     "_email": "testr1@test.com",
     "_password": "193433706",
     "_nationality": "Italy",
-    "_fund": 990,
+    "_fund": 1000,
     "_booksIds": [
-      "7340364c-0fca-42d1-8114-849cc64b60e4"
     ],
     "_orders": [
-      {
-        "id": "84225989-4ecc-40d3-986c-796fa503603a",
-        "date": "02/09/2021",
-        "inventory": [
-          "7340364c-0fca-42d1-8114-849cc64b60e4"
-        ],
-        "total": 10
-      }
+      
     ],
     "_coupons": [
       {
-        "id": "27b9a191-309f-4408-a1f9-e82e5d61257d",
-        "money": 10,
-        "deadline": "02/12/2021"
+        "id": "7863aae7-23aa-4ed4-b4d0-2d3a88a980da",
+        "money": 30,
+        "deadline": "01/22/2021"
       }
     ],
     "_id": "b90c8276-fb2c-422e-9bda-261783391b4a",
-    "_token": "4139387f-bfea-4073-9537-c14b645162d1"
+    "_token": "10a06a6a-aaee-477b-89d2-d876c507058b"
   },
   {
     "_email": "testr2@test.com",

@@ -1,7 +1,7 @@
 [
   {
     "_title": "testBook1",
-    "_price": 10,
+    "_price": 30,
     "_launchDate": "02/09/2021",
     "_genre": "boh",
     "_description": "Bellissimo",
@@ -9,7 +9,7 @@
     "_editors": [
       "Feltrinelli"
     ],
-    "_soldCopies": 1,
+    "_soldCopies": 18,
     "_reviews": [],
     "_id": "7340364c-0fca-42d1-8114-849cc64b60e4"
   },
@@ -37,7 +37,7 @@
     "_editors": [
       "Mondadori"
     ],
-    "_soldCopies": 0,
+    "_soldCopies": 1,
     "_reviews": [],
     "_id": "ba632a00-9b53-4f03-b729-db0c540eeaa4"
   }

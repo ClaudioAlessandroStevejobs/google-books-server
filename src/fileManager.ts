@@ -14,7 +14,7 @@ const writersURI = `${process.cwd()}/files/writers.json`;
 const readersURI = `${process.cwd()}/files/readers.json`;
 
 /**
- * Read file and return book, writer or reader array
+ * Read books json and translate to Book[]
  * @param uri
  */
 
@@ -104,37 +104,34 @@ export const haveAlready = (rId: string, inventory: string[]) => inventory.some(
 
 export const getCouponById = (rId: string, couponId: string) => {
 	const coupon = getReaderById(rId)!.coupons.find(coup => coup.id === couponId);
-	console.log('coupon: ', coupon);
-	let readers = readReaders();
-	const reader = readers.find(r => r.id === rId)!
-	if (!coupon) return undefined;
-	if (moment().diff(moment(coupon.deadline, 'DD/MM/YYYY')) < 0) {
-		reader.deleteCoupon(couponId);
-		fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2));
-		return undefined;
-	}
+	// let readers = readReaders();
+	// const reader = readers.find(r => r.id === rId)!
+	// if (!coupon) return undefined;
+	// if (moment().diff(moment(coupon.deadline, 'DD/MM/YYYY')) > 0) {
+	// 	reader.deleteCoupon(couponId);
+	// 	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2));
+	// 	return undefined;
+	// }
+	// return coupon;
 	return coupon;
 }
-
 
 export const makeOrder = (rId: string, inventory: string[], couponId?: string) => {
 	let books = readBooks();
 	let readers = readReaders();
 	let writers = readWriters();
-
-
 	let total: number = 0;
+	const reader = readers.find((r: Reader) => r.id === rId)!;
+	const coupon = getCouponById(rId, couponId ?? '');
+	console.debug(coupon)
 	books = books.map(b => {
 		if (inventory.includes(b.id)) b.soldCopies++;
 		return b;
 	})
-	// const authorsIds = inventory.map(bId => getBookById(bId)!.author);
-
 
 	writers.map(writer => {
 		inventory.map(bId => {
 			if (getBookById(bId)!.author === writer.id) {
-				console.log('sus');
 				const book = getBookById(bId)!
 				writer.fund += book.price;
 				total += book.price;
@@ -142,21 +139,11 @@ export const makeOrder = (rId: string, inventory: string[], couponId?: string) =
 		})
 	})
 
-	// writers.map((writer: Writer) => {
-	// 	if (authorsIds.includes(writer.id)) {
-	// 		const book = getBookById(inventory.find(bId => getBookById(bId)!.author === writer.id)!)!
-	// 		writer.fund += book.price;
-	// 		total += book.price;
-	// 	}
-	// })
+	coupon != undefined
+		? reader.useCoupon(coupon.id, total)
+		: reader.fund -= total;
 
-	// modificare solo i writer che appartengono ad una lista di writer che hanno scritto almeno un libro
-
-	const r = readers.find((r: Reader) => r.id === rId)!;
-	r.fund = r.fund - total;
-	console.log("get coupon: ", getCouponById(rId, couponId!));
-	if (couponId) r.fund += getCouponById(rId, couponId)!.money;
-	r.addBooksIds(inventory);
+	reader.addBooksIds(inventory);
 
 	const order: Order = {
 		id: v4(),
@@ -164,18 +151,16 @@ export const makeOrder = (rId: string, inventory: string[], couponId?: string) =
 		inventory,
 		total
 	}
-	readers.find((r: Reader) => r.id === rId)!.addOrder(order);
+	reader.addOrder(order);
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2));
 	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2));
 	fs.writeFileSync(writersURI, JSON.stringify(writers, null, 2));
 };
 
-
 export const isBookExists = (bookId: string): boolean => {
 	const books = readBooks();
 	return books.some(({ id }) => id === bookId)
 }
-
 
 export const isEmailExists = (iEmail: string, role: "READER" | "WRITER") =>
 ({
@@ -257,7 +242,6 @@ export const deleteBook = (iId: string): void => {
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2));
 }
 
-
 export const editBook = (bId: string, title: string, price: number, description: string): void => {
 	let books = readBooks();
 	books.map((b: Book) => {
@@ -276,8 +260,7 @@ export const getBooks = (id: string, role: "READER" | "WRITER") =>
 		READER: getReaderById(id)!.booksIds
 	}[role]).map(bId => getBookById(bId)!);
 
-
-export const writeReviews = (bId: string, rId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5): void => {
+export const writeReview = (bId: string, rId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5): void => {
 	const wReview: Review = { id: v4(), rId, title, date: moment().subtract(10, 'days').calendar(), text, valutation }
 	let books: Book[] = readBooks();
 	books.map((b: Book) => {
@@ -302,36 +285,31 @@ export const editReview = (bId: string, rId: string, title: string, text: string
 export const isReviewExistByReader = (bId: string, rId: string): boolean =>
 	getBookById(bId)!.reviews.some((r: Review) => r.rId === rId);
 
-
-
-// export const isReviewExist = (rId:string, bId:string) : boolean => 
-// 	getBookById(bId)!.reviews.some((r: Review) => r.id === rId);
-
-
-export const deleteReviews = (bId: string, rId: string) => {
+export const deleteReview = (bId: string, rId: string) => {
 	let books = readBooks();
 	books.map((b: Book) => {
 		if (b.id === bId) {
 			const review = b.reviews.find((r: Review) => r.id === rId)!;
 			b.reviews.splice(b.reviews.indexOf(review), 1);
+			b.deleteReview(review.id);
 		}
 	})
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
-
 
 export const writeCoupon = (rId: string, money: number, otherRId?: string) => {
 	let readers = readReaders();
 	const coupon: Coupon = {
 		id: v4(),
 		money,
-		deadline: moment().subtract(10, 'days').add(3, 'days').calendar()
+		deadline: moment().add(3, 'day').format('L')
 	}
 	const reader = readers.find(r => r.id === rId)!
 	reader.fund -= money;
 	otherRId ? readers.find(r => r.id === otherRId)!.addCoupon(coupon) : reader.addCoupon(coupon);
 	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2));
 }
+
 export const isReviewExist = (rId: string, bId: string): boolean =>
 	getBookById(bId)!.reviews.some((r: Review) => r.id === rId);
 
@@ -346,4 +324,4 @@ export const getEarnings = (wId: string) => {
 	});
 	return earnings;
 }
-//deletRew
+

@@ -2,12 +2,11 @@ import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
 import {
     areSomeBookUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview,
-    getBookById, getReaderById, isBookExists, writeReviews, haveAlready, writeCoupon, refil, isReviewExistByReader, deleteReviews
+    getBookById, getReaderById, isBookExists, writeReview, haveAlready, writeCoupon, refil, isReviewExistByReader, deleteReview
 } from '../fileManager';
 import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 const router = Router({ mergeParams: true });
-
 
 router.get('/', ({ params: { rId } }: Request, res: Response) => res.status(200).json(getReaderById(rId)))
 
@@ -47,7 +46,6 @@ router.post('/gift',
     }
 )
 
-//scrivere una recensione di un libro
 router.post('/review',
     body('bId').isUUID().withMessage('Invalid bId'),
     body('text').isString().withMessage('Invalid text'),
@@ -57,10 +55,8 @@ router.post('/review',
     ({ body: { bId, title, text, valutation }, params: { rId } }: Request, res: Response) => {
         if (!getBookById(bId)) return res.status(404).json({ message: 'Book not found' });
         if (isReviewExistByReader(bId, rId)) return res.status(404).json({ message: ' Review exists' })
-        writeReviews(bId, rId, title, text, valutation);
-        return res.status(201).json('Review added');
-        //se esiste già la recensione non la deve inserire
-
+        writeReview(bId, rId, title, text, valutation);
+        return res.status(201).json({ message: 'Review added' });
     }
 )
 
@@ -94,7 +90,7 @@ router.delete('/book',
 router.delete('/review',
     ({ body: { bId, rId } }: Request, res: Response) => {
         if (!getBookById(bId)) return res.status(404).json({ message: 'Book not found' });
-        deleteReviews(bId, rId);
+        deleteReview(bId, rId);
         return res.status(204).json({ message: 'Review deleted' })
     })
 

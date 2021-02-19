@@ -1,6 +1,7 @@
 import { Order } from "../interfaces/Order";
 import { Coupon } from "../interfaces/Coupon";
 import { v4 } from "uuid";
+import moment from "moment";
 export class Reader {
 	constructor(
 		private _email: string,
@@ -52,10 +53,24 @@ export class Reader {
 			this.coupons.push(coup);
 		})
 	}
-	// levare o usare coupon scaduto
+
 	deleteCoupon = (cId: string) => {
-		const coupon = this.coupons.find((coup: Coupon) => coup.id === cId)!;
+		const coupon = this.coupons.find(({ id }: Coupon) => id === cId)!;
 		const index = this.coupons.indexOf(coupon)
-		this.coupons.splice(index, 0);
+		this.coupons.splice(index, 1);
+	}
+
+	useCoupon = (cId: string, money: number) => {
+		const coupon = this.coupons.find(({ id }: Coupon) => id === cId)!;
+		if (moment(coupon.deadline, 'MM/DD/YYYY').isBefore(moment())) {
+			this.fund -= money;
+			this.deleteCoupon(cId);
+			return;
+		}
+		if (coupon.money < money) {
+			this.fund = this.fund - money + coupon.money;
+			this.deleteCoupon(cId);
+		} else if (coupon.money === money) this.deleteCoupon(cId);
+		else coupon.money -= money
 	}
 }

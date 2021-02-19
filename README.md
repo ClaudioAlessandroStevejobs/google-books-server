@@ -1,74 +1,44 @@
 # Esame Finale
+
 ## google-books
 
-# Back-end:
+### Back-end:
 
 Routers:
-- authRouter:
-- login (post)
-- register (post)
-- reader / customer:
-- fare un ordine (post)
-- regalare un buono (post)
-- vedere i miei libri (get)
-- scrivere una recensione di un libro che ho (post)
-- eliminare un mio libro (delete)
-- ricaricare il conto (post/put)
-- vedere le tue recensioni (get)
-- modificare una recensione (put)
-- writer / author:
-- scrivere un libro (post)
-- ritirare un libro pubblicato (delete)
-- modificare un libro (put)
-- visualizza i guadagni (get)
 
-Models:
+#### Auth:
+
+- login
+- register
+- logout
+
+#### Reader:
+
+- Fare un ordine
+- Regalare un buono
+- Vedere i propri libri
+- Scrivere una recensione di un libro che si ha
+- Eliminare un libro
+- Ricaricare il conto
+- Modificare una recensione
+- Cancellare una recensione
+
+#### Writer :
+
+- scrivere un libro
+- ritirare un libro pubblicato
+- modificare un libro
+- visualizza i guadagni
+
+#### Models:
+
 - Book
-- Scrittore
-- Lettore
+- Writer
+- Reader
 
-Interfaces:
-- User (generico)
-- Recensione:
-id
-data
-text
-valutazione
-ordine:
-id
-data
-inventario (array di libri | buoni)
-tot
-buono:
-id
-scadenza (es 10 giorni dopo l’ordine)
-soldi
+#### Interfaces:
 
-
-
-
-
-
-
-
-
-JSONs Database:
-
-books:
-id
-titolo
-autore/i[] (admin id)
-case editrici[] (id)
-recensioni[] 
-costo
-data pubblicazione
-categoria
-users:
-email
-id
-password
-?token
-libri[]
-ordini
-ruolo: customer | autore
-nazionalità
+- User
+- Review
+- Order
+- Coupon
