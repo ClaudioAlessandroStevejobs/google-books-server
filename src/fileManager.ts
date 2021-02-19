@@ -89,10 +89,10 @@ export const getIdFromEmail = (iEmail: string, role: 'READER' | 'WRITER') =>
 ({
 	WRITER: readWriters().find(
 		({ email }: Writer) => email === iEmail
-	)!.id,
+	)?.id,
 	READER: readReaders().find(
 		({ email }: Reader) => email === iEmail
-	)!.id,
+	)?.id,
 }[role]);
 
 export const areSomeBookUndefined = (inventory: string[]) => inventory.map(bId => getBookById(bId)).some(b => b === undefined);
@@ -299,7 +299,7 @@ export const editReview = (bId: string, rId: string, title: string, text: string
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
 
-export const isReviewExistByReader = (bId:string,rId:string): boolean => 
+export const isReviewExistByReader = (bId: string, rId: string): boolean =>
 	getBookById(bId)!.reviews.some((r: Review) => r.rId === rId);
 
 
@@ -316,7 +316,7 @@ export const deleteReviews = (bId: string, rId: string) => {
 			b.reviews.splice(b.reviews.indexOf(review), 1);
 		}
 	})
-	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))	
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
 
 
