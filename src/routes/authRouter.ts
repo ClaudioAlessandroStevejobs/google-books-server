@@ -1,8 +1,8 @@
 import { Router, Request, Response } from 'express';
-import { body } from 'express-validator';
+import { body, header } from 'express-validator';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 import stringHash from 'string-hash';
-import { isEmailExists, isPasswordCorrect, writeToken, writeUser } from '../fileManager'
+import { deleteToken, isEmailExists, isPasswordCorrect, writeToken, writeUser } from '../fileManager'
 
 const router = Router();
 
@@ -32,8 +32,12 @@ router.post('/login',
         return res.status(201).send(writeToken(email, role));
     })
 
-router.post('/logout', (req: Request, res: Response) => {
+router.post('/logout',
+    header('token').isString().notEmpty().withMessage('Invalid token / No user logged'),
+    validationMiddleware,
+    ({ headers: { token } }: Request, res: Response) =>
+        deleteToken(token as string) ? res.status(201).json({ message: 'Logout' }) : res.status(404).json({ message: 'Token not found' })
+)
 
-})
 export default router;
 

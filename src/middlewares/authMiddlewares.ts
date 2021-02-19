@@ -7,7 +7,5 @@ export const readerAuthMiddleware = (
 }
 
 export const writerAuthMiddleware = ({ headers: { token }, params: { wId } }: Request, res: Response, next: NextFunction) => {
-
-    const writer = getWriterById(wId as string);
     (getWriterById(wId as string)?.token || '') === token ? next() : res.status(403).json({ message: 'Not authorized' })
 }

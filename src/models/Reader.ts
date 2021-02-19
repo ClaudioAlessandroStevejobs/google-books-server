@@ -47,7 +47,7 @@ export class Reader {
 
 	addOrder = (order: Order) => { this.orders.push(order) }
 
-	addCoupons = (...coupons: Coupon[]) => {
+	addCoupon = (...coupons: Coupon[]) => {
 		coupons.map(coup => {
 			this.coupons.push(coup);
 		})

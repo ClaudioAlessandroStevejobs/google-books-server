@@ -3,24 +3,42 @@
     "_email": "test1@test.com",
     "_password": "193433706",
     "_nationality": "Rome",
-    "_fund": 990,
-    "_booksIds": [
-      "4e5003b6-ba73-4c72-b377-b313240f11fc"
-    ],
+    "_fund": 1,
+    "_booksIds": [],
     "_orders": [],
-    "_coupons": [],
-    "_id": "267a6e9e-014d-4957-b3a4-e9e591128637",
-    "_token": "22f4f3f5-6a00-4af1-8674-1d5eb565a729"
+    "_coupons": [
+      {
+        "id": "e98fe6ee-5b33-421a-96d4-13766e292270",
+        "money": 3,
+        "deadline": "02/11/2021"
+      }
+    ],
+    "_id": "267a6e9e-014d-4957-b3a4-e9e591128637"
   },
   {
-    "_email": "prova2@gmail.com",
-    "_password": "3762205709",
-    "_nationality": "Turca",
+    "_email": "test2@test.com",
+    "_password": "193433706",
+    "_nationality": "Rome",
+    "_fund": 0,
+    "_booksIds": [],
+    "_orders": [],
+    "_coupons": [
+      {
+        "id": "c77a45ed-717e-4093-8028-e97aaf7010d8",
+        "money": 1,
+        "deadline": "02/11/2021"
+      }
+    ],
+    "_id": "65514b5f-97c8-4ded-97fc-7f88c5c6782c"
+  },
+  {
+    "_email": "test3@test.com",
+    "_password": "193433706",
+    "_nationality": "Rome",
     "_fund": 0,
     "_booksIds": [],
     "_orders": [],
     "_coupons": [],
-    "_id": "74f2f1c8-83c3-475c-8672-fa32ca46c5e8",
-    "_token": "0b79659b-da9f-4a1b-bdeb-01ed3c297c47"
+    "_id": "74f2f1c8-83c3-475c-8672-fa32ca46c5e8"
   }
 ]
