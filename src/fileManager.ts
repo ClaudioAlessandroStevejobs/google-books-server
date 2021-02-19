@@ -299,6 +299,27 @@ export const editReview = (bId: string, rId: string, title: string, text: string
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
 
+export const isReviewExistByReader = (bId:string,rId:string): boolean => 
+	getBookById(bId)!.reviews.some((r: Review) => r.rId === rId);
+
+
+
+// export const isReviewExist = (rId:string, bId:string) : boolean => 
+// 	getBookById(bId)!.reviews.some((r: Review) => r.id === rId);
+
+
+export const deleteReviews = (bId: string, rId: string) => {
+	let books = readBooks();
+	books.map((b: Book) => {
+		if (b.id === bId) {
+			const review = b.reviews.find((r: Review) => r.id === rId)!;
+			b.reviews.splice(b.reviews.indexOf(review), 1);
+		}
+	})
+	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))	
+}
+
+
 export const writeCoupon = (rId: string, money: number, otherRId?: string) => {
 	let readers = readReaders();
 	const coupon: Coupon = {
