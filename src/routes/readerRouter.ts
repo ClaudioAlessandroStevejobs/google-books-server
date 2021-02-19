@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
-import { areSomeBookIUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview, getBookById, getReaderById, isBookExists, writeReviews } from '../fileManager';
+import { areSomeBookIUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview, getBookById, getReaderById, isBookExists, writeReviews, deleteReviews, isReviewExistByReader } from '../fileManager';
 import { } from '../fileManager';
 import { Order } from '../interfaces/Order';
 import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
@@ -49,8 +49,10 @@ router.post('/review',
     readerAuthMiddleware,
     ({ body: { bId, title, text, valutation }, params: { rId } }: Request, res: Response) => {
         if (!getBookById(bId)) return res.status(404).json({ message: 'Book not found' });
+        if(isReviewExistByReader(bId,rId)) return res.status(404).json({message: ' Review exists'})
         writeReviews(bId,rId, title, text, valutation);
         return res.status(201).json('Review added');
+        //se esiste già la recensione non la deve inserire
 
     })
 
@@ -61,9 +63,9 @@ router.post('/refils', ({ body: { money } }: Request, res: Response) => { })
 //modificare una recensione
 router.put('/review',
     ({ body: { bId, reviewId, title, text, valutation } }: Request, res: Response) => {
-    if (!isBookExists(reviewId)) return res.status(404).json('Review not exists');
+        if (!isReviewExistByReader(bId,reviewId)) return res.status(404).json({message: 'Review not exists'});
     editReview(bId, reviewId, title, text, valutation);
-    return res.status(200).json('Review edited');
+        return res.status(200).json({ message: 'Review edited' });
 })
 
 
@@ -73,14 +75,17 @@ router.delete('/books',
     validationMiddleware,
     readerAuthMiddleware,
     ({ body: { id } }: Request, res: Response) => {
-        if (!isBookExists(id)) return res.status(404).json('Book not found')
+        if (!isBookExists(id)) return res.status(404).json({message: 'Book not found'})
         deleteBook(id)
-        return res.status(204).json('Book deleted')
+        return res.status(204).json({ message: 'Book deleted' })
     })
 
 
-router.delete('/review', (req: Request, res: Response) => {
-        
+router.delete('/review',
+    ({ body: { bId, rId } }: Request, res: Response) => {
+        if (!getBookById(bId)) return res.status(404).json({ message: 'Book not found' });
+        deleteReviews(bId, rId);
+        return res.status(204).json({ message: 'Review deleted' })
     })
 
 export default router;
