@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { body, param } from "express-validator";
+import { body } from "express-validator";
 import { getWriterById, writeBook, isBookExists, deleteBook, editBook, getEarnings, getBooks, } from "../fileManager";
 import { validationMiddleware } from "../middlewares/validationMiddleware";
 const router = Router({ mergeParams: true });
@@ -26,23 +26,24 @@ router.post(
 )
 
 router.delete('/book',
-    param('id').isNumeric(),
+    body('bookId').isNumeric(),
     validationMiddleware,
-    ({ body: { id } }: Request, res: Response) => {
-        if (!isBookExists(id)) return res.status(404).json('Book not found')
-        deleteBook(id);
+    ({ body: { bookId } }: Request, res: Response) => {
+        if (!isBookExists(bookId)) return res.status(404).json('Book not found')
+        deleteBook(bookId);
         return res.status(204).json('Book deleted');
     }
 )
 
 router.put('/book',
-    validationMiddleware,
+    body('bookId').isUUID().notEmpty().withMessage('Invalid bookId'),
     body('title').isString().notEmpty().withMessage('Invalid title'),
     body('price').isNumeric().withMessage('Invalid price'),
     body('description').isString().notEmpty().withMessage('Invalid description'),
-    ({ body: { id, title, price, description } }: Request, res: Response) => {
-        if (!isBookExists(id)) return res.status(404).json('Book not found');
-        editBook(id, title, price, description)
+    validationMiddleware,
+    ({ body: { bookId, title, price, description } }: Request, res: Response) => {
+        if (!isBookExists(bookId)) return res.status(404).json('Book not found');
+        editBook(bookId, title, price, description)
         return res.status(200).json('Book edited')
     }
 )

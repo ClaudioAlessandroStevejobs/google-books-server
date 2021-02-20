@@ -29,11 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(options));
 app.use("/auth", authRouter);
 app.use("/writer/:wId", writerAuthMiddleware, writerRouter);
-app.use(
-	"/reader/:rId",
-	readerAuthMiddleware,
-	readerRouter
-);
+app.use("/reader/:rId", readerAuthMiddleware, readerRouter);
 
 app.get('/books', (_, res: Response) => res.status(200).json(readBooks()))
 

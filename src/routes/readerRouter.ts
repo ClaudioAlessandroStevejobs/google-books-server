@@ -1,10 +1,9 @@
 import { Router, Request, Response } from 'express';
-import { body, param } from 'express-validator';
+import { body } from 'express-validator';
 import {
     areSomeBookUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview,
     getBookById, getReaderById, isBookExists, writeReview, haveAlready, writeCoupon, refil, isReviewExistByReader, deleteReview
 } from '../fileManager';
-import { readerAuthMiddleware } from '../middlewares/authMiddlewares';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 const router = Router({ mergeParams: true });
 
@@ -14,7 +13,6 @@ router.get('/books', ({ params: { rId } }: Request, res: Response) => res.status
 
 router.post('/order',
     validationMiddleware,
-    readerAuthMiddleware,
     ({ body: { inventory, couponId }, params: { rId } }: Request, res: Response) => {
         if (areSomeBookUndefined(inventory)) return res.status(404).json({ message: 'Some books not found' });
         if (isTooExpensive(rId, inventory, couponId)) return res.status(403).json({ message: 'Not enough money' });
@@ -47,15 +45,15 @@ router.post('/gift',
 )
 
 router.post('/review',
-    body('bId').isUUID().withMessage('Invalid bId'),
-    body('text').isString().withMessage('Invalid text'),
-    body('valutation').isNumeric().withMessage('Invalid valutation'),
+    body('bookId').isUUID().withMessage('Invalid bookId'),
+    body('title').isString().notEmpty().withMessage('Invalid title'),
+    body('text').isString().notEmpty().withMessage('Invalid text'),
+    body('valutation').isInt().custom(val => val === 1 || val === 2 || val === 3 || val === 4 || val === 5).withMessage('Invalid valutation'),
     validationMiddleware,
-    readerAuthMiddleware,
-    ({ body: { bId, title, text, valutation }, params: { rId } }: Request, res: Response) => {
-        if (!getBookById(bId)) return res.status(404).json({ message: 'Book not found' });
-        if (isReviewExistByReader(bId, rId)) return res.status(404).json({ message: ' Review exists' })
-        writeReview(bId, rId, title, text, valutation);
+    ({ body: { bookId, title, text, valutation }, params: { rId } }: Request, res: Response) => {
+        if (!getBookById(bookId)) return res.status(404).json({ message: 'Book not found' });
+        if (isReviewExistByReader(bookId, rId)) return res.status(404).json({ message: ' Review exists' })
+        writeReview(bookId, rId, title, text, valutation);
         return res.status(201).json({ message: 'Review added' });
     }
 )
@@ -70,28 +68,38 @@ router.post('/refils',
 )
 
 router.put('/review',
-    ({ body: { bId, reviewId, title, text, valutation } }: Request, res: Response) => {
-        if (!isReviewExistByReader(bId, reviewId)) return res.status(404).json({ message: 'Review not exists' });
-        editReview(bId, reviewId, title, text, valutation);
+    body('bookId').isUUID().withMessage('Invalid bookId'),
+    body('reviewId').isUUID().withMessage('Invalid reviewId'),
+    body('title').isString().notEmpty().withMessage('Invalid title'),
+    body('text').isString().notEmpty().withMessage('Invalid text'),
+    body('valutation').isInt().custom(val => val === 1 || val === 2 || val === 3 || val === 4 || val === 5).withMessage('Invalid valutation'),
+    validationMiddleware,
+    ({ body: { bookId, reviewId, title, text, valutation } }: Request, res: Response) => {
+        if (!isReviewExistByReader(bookId, reviewId)) return res.status(404).json({ message: 'Review not exists' });
+        editReview(bookId, reviewId, title, text, valutation);
         return res.status(200).json({ message: 'Review edited' });
-    })
+    }
+)
 
 
 router.delete('/book',
-    param('id').isNumeric(),
+    body('bookId').isUUID().notEmpty().withMessage('Invalid bookId'),
     validationMiddleware,
-    readerAuthMiddleware,
-    ({ body: { id } }: Request, res: Response) => {
-        if (!isBookExists(id)) return res.status(404).json({ message: 'Book not found' })
-        deleteBook(id)
+    ({ body: { bookId } }: Request, res: Response) => {
+        if (!isBookExists(bookId)) return res.status(404).json({ message: 'Book not found' })
+        deleteBook(bookId)
         return res.status(204).json({ message: 'Book deleted' })
-    })
+    }
+)
 
 router.delete('/review',
-    ({ body: { bId, rId } }: Request, res: Response) => {
-        if (!getBookById(bId)) return res.status(404).json({ message: 'Book not found' });
-        deleteReview(bId, rId);
+    body('bookId').isUUID().withMessage('Invalid bookId'),
+    body('reviewId').isUUID().withMessage('Invalid reviewId'),
+    ({ body: { bookId, reviewId } }: Request, res: Response) => {
+        if (!getBookById(bookId)) return res.status(404).json({ message: 'Book not found' });
+        deleteReview(bookId, reviewId);
         return res.status(204).json({ message: 'Review deleted' })
-    })
+    }
+)
 
 export default router;
