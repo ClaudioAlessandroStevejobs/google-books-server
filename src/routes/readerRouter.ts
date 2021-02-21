@@ -34,12 +34,12 @@ router.post('/coupon',
 
 router.post('/gift',
     body('money').isNumeric().withMessage('Invalid money'),
-    body('otherRId').isUUID().withMessage('Invalid other id'),
+    body('email').isEmail().withMessage('Invalid email'),
     validationMiddleware,
-    ({ body: { otherRId, money }, params: { rId } }: Request, res: Response) => {
-        if (!getReaderById(otherRId)) return res.status(404).json({ message: 'Other reader not found' });
+    ({ body: { email, money }, params: { rId } }: Request, res: Response) => {
+        if (!getReaderById(email)) return res.status(404).json({ message: 'Other reader not found' });
         if (money > getReaderById(rId)!.fund) return res.status(403).json({ message: 'Not enough money' });
-        writeCoupon(rId, money, otherRId);
+        writeCoupon(rId, money, email);
         return res.status(201).json({ message: 'Coupon gifted' });
     }
 )

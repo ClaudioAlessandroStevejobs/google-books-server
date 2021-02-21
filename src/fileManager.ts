@@ -297,7 +297,11 @@ export const deleteReview = (bId: string, rId: string) => {
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2))
 }
 
-export const writeCoupon = (rId: string, money: number, otherRId?: string) => {
+export const getReaderByEmail = (iEmail: string) =>
+	readReaders().find(({ email }) => email === iEmail);
+
+
+export const writeCoupon = (rId: string, money: number, iEmail?: string) => {
 	let readers = readReaders();
 	const coupon: Coupon = {
 		id: v4(),
@@ -306,7 +310,7 @@ export const writeCoupon = (rId: string, money: number, otherRId?: string) => {
 	}
 	const reader = readers.find(r => r.id === rId)!
 	reader.fund -= money;
-	otherRId ? readers.find(r => r.id === otherRId)!.addCoupon(coupon) : reader.addCoupon(coupon);
+	iEmail ? readers.find(({ email }) => email === iEmail)!.addCoupon(coupon) : reader.addCoupon(coupon);
 	fs.writeFileSync(readersURI, JSON.stringify(readers, null, 2));
 }
 
