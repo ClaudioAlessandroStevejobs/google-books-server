@@ -147,7 +147,7 @@ export const makeOrder = (rId: string, inventory: string[], couponId?: string) =
 
 	const order: Order = {
 		id: v4(),
-		date: moment().subtract(10, 'days').calendar(),
+		date: moment().calendar(),
 		inventory,
 		total
 	}
@@ -229,7 +229,7 @@ export const deleteToken = (iToken: string) => {
 export const writeBook = (title: string, price: number, genre: string, description: string, author: string, editors: string[]) => {
 	const books = readBooks();
 	const writers = readWriters();
-	const book = new Book(title, price, moment().subtract(10, 'days').calendar(), genre, description, author, editors);
+	const book = new Book(title, price, moment().calendar(), genre, description, author, editors);
 	books.push(book);
 	writers.find(w => w.id === author)!.addBooksIds(book.id);
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2));
@@ -261,7 +261,7 @@ export const getBooks = (id: string, role: "READER" | "WRITER") =>
 	}[role]).map(bId => getBookById(bId)!);
 
 export const writeReview = (bId: string, rId: string, title: string, text: string, valutation: 1 | 2 | 3 | 4 | 5): void => {
-	const wReview: Review = { id: v4(), rId, title, date: moment().subtract(10, 'days').calendar(), text, valutation }
+	const wReview: Review = { id: v4(), rId, title, date: moment().calendar(), text, valutation }
 	let books: Book[] = readBooks();
 	books.map((b: Book) => {
 		if (b.id === bId) b.addReview(wReview)

@@ -16,7 +16,7 @@ router.post('/order',
     ({ body: { inventory, couponId }, params: { rId } }: Request, res: Response) => {
         if (areSomeBookUndefined(inventory)) return res.status(404).json({ message: 'Some books not found' });
         if (isTooExpensive(rId, inventory, couponId)) return res.status(403).json({ message: 'Not enough money' });
-        if (haveAlready(rId, inventory)) return res.status(403).json({ message: 'Have already book' });
+        if (haveAlready(rId, inventory)) return res.status(409).json({ message: 'Have already book' });
         makeOrder(rId, inventory, couponId);
         return res.status(201).json({ message: 'Order effected' });
     }
