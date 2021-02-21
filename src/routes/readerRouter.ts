@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import {
     areSomeBookUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview,
-    getBookById, getReaderById, isBookExists, writeReview, haveAlready, writeCoupon, refil, isReviewExistByReader, deleteReview
+    getBookById, getReaderById, isBookExists, writeReview, haveAlready, writeCoupon, refil, isReviewExistByReader, deleteReview, getReaderByEmail
 } from '../fileManager';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 const router = Router({ mergeParams: true });
@@ -37,7 +37,7 @@ router.post('/gift',
     body('email').isEmail().withMessage('Invalid email'),
     validationMiddleware,
     ({ body: { email, money }, params: { rId } }: Request, res: Response) => {
-        if (!getReaderById(email)) return res.status(404).json({ message: 'Other reader not found' });
+        if (!getReaderByEmail(email)) return res.status(404).json({ message: 'Other reader not found' });
         if (money > getReaderById(rId)!.fund) return res.status(403).json({ message: 'Not enough money' });
         writeCoupon(rId, money, email);
         return res.status(201).json({ message: 'Coupon gifted' });
