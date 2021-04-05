@@ -48,8 +48,4 @@ router.put('/book',
     }
 )
 
-router.get('/earnings', ({ params: { wId } }: Request, res: Response) =>
-    res.status(200).json(getEarnings(wId))
-)
-
 export default router;

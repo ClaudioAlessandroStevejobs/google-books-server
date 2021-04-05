@@ -1,11 +1,11 @@
-import express, { Response } from "express";
+import express, { Request, Response } from "express";
 import authRouter from "./routes/authRouter";
 import writerRouter from "./routes/writerRouter";
 import readerRouter from "./routes/readerRouter";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { writerAuthMiddleware, readerAuthMiddleware } from "./middlewares/authMiddlewares";
-import { readBooks } from "./fileManager";
+import { getWriterById, getWriterNameById, readBooks } from "./fileManager";
 
 const app = express();
 const PORT = 3001;
@@ -32,7 +32,7 @@ app.use("/writer/:wId", writerAuthMiddleware, writerRouter);
 app.use("/reader/:rId", readerAuthMiddleware, readerRouter);
 
 app.get('/books', (_, res: Response) => res.status(200).json(readBooks()))
-
+app.get('/writer-name/:wId', ({ params: { wId }}: Request, res: Response) => res.status(200).json(getWriterNameById(wId)))
 app.listen(PORT, () => {
 	console.log(`Server start on ${PORT}`);
 });
