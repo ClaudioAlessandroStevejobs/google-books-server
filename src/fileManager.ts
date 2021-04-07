@@ -21,9 +21,9 @@ const readersURI = `${process.cwd()}/files/readers.json`;
 export const readBooks = (): Book[] => {
 	const anyArray = JSON.parse(fs.readFileSync(booksURI).toString());
 	let bookArray: Book[] = [];
-	anyArray.map(({ _title, _price, _launchDate, _genre, _description, _author, _editors, _soldCopies, _reviews, _id }: any) => {
+	anyArray.map(({ _title, _price, _launchDate, _genre, _description, _author, _editors, _img, _soldCopies, _reviews, _id}: any) => {
 		bookArray.push(
-			new Book(_title, _price, _launchDate, _genre, _description, _author, _editors, _soldCopies, _reviews, _id)
+			new Book(_title, _price, _launchDate, _genre, _description, _author, _editors, _img ,_soldCopies, _reviews, _id)
 		);
 	});
 	return bookArray;
