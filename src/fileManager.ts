@@ -98,7 +98,7 @@ export const getIdFromEmail = (iEmail: string, role: 'READER' | 'WRITER') =>
 export const areSomeBookUndefined = (inventory: string[]) => inventory.map(bId => getBookById(bId)).some(b => b === undefined);
 
 export const isTooExpensive = (rId: string, inventory: string[], couponId?: string) =>
-	inventory.map(bId => getBookById(bId)!.price).reduce((acc: number, curr: number) => acc + curr) > getReaderById(rId)!.fund + (getCouponById(rId, couponId || '')?.money || 0)
+	 inventory.map(bId => getBookById(bId)!.price).reduce((acc: number, curr: number) => acc + curr) > getReaderById(rId)!.fund + (getCouponById(rId, couponId || '')?.money || 0)
 
 export const haveAlready = (rId: string, inventory: string[]) => inventory.some(bId => getReaderById(rId)!.booksIds.includes(bId));
 
@@ -123,7 +123,6 @@ export const makeOrder = (rId: string, inventory: string[], couponId?: string) =
 	let total: number = 0;
 	const reader = readers.find((r: Reader) => r.id === rId)!;
 	const coupon = getCouponById(rId, couponId ?? '');
-	console.debug(coupon)
 	books = books.map(b => {
 		if (inventory.includes(b.id)) b.soldCopies++;
 		return b;
@@ -226,10 +225,10 @@ export const deleteToken = (iToken: string) => {
 	return writer != undefined || reader != undefined;
 }
 
-export const writeBook = (title: string, price: number, genre: string, description: string, author: string, editors: string[]) => {
+export const writeBook = (title: string, price: number, genre: string, description: string, author: string, editors: string[], img: string) => {
 	const books = readBooks();
 	const writers = readWriters();
-	const book = new Book(title, price, moment().calendar(), genre, description, author, editors);
+	const book = new Book(title, price, moment().calendar(), genre, description, author, editors, img);
 	books.push(book);
 	writers.find(w => w.id === author)!.addBooksIds(book.id);
 	fs.writeFileSync(booksURI, JSON.stringify(books, null, 2));

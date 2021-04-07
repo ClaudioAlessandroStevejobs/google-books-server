@@ -18,9 +18,10 @@ router.post(
     body('genre').isString().notEmpty().withMessage('Invalid genre'),
     body('description').isString().notEmpty().withMessage('Invalid description'),
     body('editors').isArray().notEmpty().withMessage('Invalid editors'),
+    body('img').isString().notEmpty().withMessage('Invalid img'),
     validationMiddleware,
-    ({ body: { title, price, genre, description, editors }, params: { wId } }: Request, res: Response) => {
-        writeBook(title, price, genre, description, wId, editors);
+    ({ body: { title, price, genre, description, editors, img }, params: { wId } }: Request, res: Response) => {
+        writeBook(title, price, genre, description, wId, editors, img);
         return res.status(201).json({ message: 'Book posted' });
     }
 )

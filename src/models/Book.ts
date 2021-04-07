@@ -9,6 +9,7 @@ export class Book {
 		private _description: string,
 		private _author: string,
 		private _editors: string[],
+		private _img: string,
 		private _soldCopies: number = 0,
 		private _reviews: Review[] = [],
 		private _id: string = v4()
