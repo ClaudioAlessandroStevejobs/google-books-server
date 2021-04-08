@@ -331,5 +331,12 @@ export const getEarnings = (wId: string) => {
 export const getWriterNameById = (wId: string) : string | undefined => 
 	getWriterById(wId) ? getWriterById(wId)!.email.split('@')[0] : undefined
 
-	
+export const getCoupons = (rId: string) => {
+	const {coupons, fund} = getReaderById(rId)!;
+	return {
+		coupons,
+		fund
+	} 
+}
+
 

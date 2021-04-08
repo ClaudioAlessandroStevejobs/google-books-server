@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
 import {
     areSomeBookUndefined, getBooks, isTooExpensive, makeOrder, deleteBook, editReview,
-    getBookById, getReaderById, isBookExists, writeReview, haveAlready, writeCoupon, refil, isReviewExistByReader, deleteReview, getReaderByEmail
+    getBookById, getReaderById, isBookExists, writeReview, haveAlready, writeCoupon, refil, isReviewExistByReader, deleteReview, getReaderByEmail, getCoupons
 } from '../fileManager';
 import { validationMiddleware } from '../middlewares/validationMiddleware';
 const router = Router({ mergeParams: true });
@@ -100,6 +100,12 @@ router.delete('/review',
         deleteReview(bookId, reviewId);
         return res.status(204).json({ message: 'Review deleted' })
     }
+)
+
+router.get('/coupons',
+    ({ params: { rId } }: Request, res: Response) => 
+        res.status(200).json(getCoupons(rId))
+    
 )
 
 export default router;
