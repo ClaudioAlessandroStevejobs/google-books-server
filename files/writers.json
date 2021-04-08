@@ -1,1 +1,15 @@
-[]
+[
+  {
+    "_email": "vincenzomars16@gmail.com",
+    "_password": "3065827068",
+    "_nationality": "Italy",
+    "_fund": 0,
+    "_booksIds": [
+      "6986bb75-402c-4488-9754-dea550dccfdd",
+      "1601abb9-cb6b-4485-8fcb-4d121679e93f",
+      "7cc81d8a-e6fe-4517-9b73-369d1143630b",
+      "ddda5cb9-8adc-4325-b8f2-78bc072bd805"
+    ],
+    "_id": "4e2dc85b-fb73-4a36-9ce5-46d7c328b8e7"
+  }
+]

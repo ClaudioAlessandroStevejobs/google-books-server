@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "_title": "Imparare a programmare",
+    "_price": 8,
+    "_launchDate": "Today at 7:15 PM",
+    "_genre": "Studio",
+    "_description": "Il Libro più fresco dell'universo, non solo diventi un programmatore, ma pure ricco, wow.",
+    "_author": "4e2dc85b-fb73-4a36-9ce5-46d7c328b8e7",
+    "_editors": [
+      "Marianella"
+    ],
+    "_img": "https://images-na.ssl-images-amazon.com/images/I/41ySYwrRqyL._SX331_BO1,204,203,200_.jpg",
+    "_soldCopies": 0,
+    "_reviews": [],
+    "_id": "7cc81d8a-e6fe-4517-9b73-369d1143630b"
+  },
+  {
+    "_title": "Il Trono di Spade",
+    "_price": 12,
+    "_launchDate": "Today at 7:17 PM",
+    "_genre": "Fantasy",
+    "_description": "Il gioco del trono è un romanzo fantasy del 1996 dello scrittore statunitense George R. R. Martin; rappresenta il primo libro della saga delle Cronache del ghiaccio e del fuoco, che prosegue con Lo scontro dei re; è costituito da un prologo e 72 capitoli.",
+    "_author": "4e2dc85b-fb73-4a36-9ce5-46d7c328b8e7",
+    "_editors": [
+      "Oscar Absolute"
+    ],
+    "_img": "https://www.mondadoristore.it/img/trono-spade-Libro-quinto-George-RR-Martin/ea978880466693/BL/BL/01/NZO/?tit=Il+trono+di+spade.+Libro+quinto+delle+Cronache+del+ghiaccio+e+del+fuoco.+5%3A+I+guerrieri+del+ghiaccio-I+fuochi+di+Valyria-La+danza+dei+draghi&aut=George+R.R.+Martin",
+    "_soldCopies": 0,
+    "_reviews": [],
+    "_id": "ddda5cb9-8adc-4325-b8f2-78bc072bd805"
+  },
+  {
+    "_title": "Il Piccolo Principe",
+    "_price": 7,
+    "_launchDate": "Today at 7:08 PM",
+    "_genre": "Per Bambini",
+    "_description": "Il piccolo principe è un racconto di Antoine de Saint-Exupéry, il più conosciuto della sua produzione letteraria, pubblicato il 6 aprile 1943 a New York da Reynal & Hitchcock nella traduzione inglese e qualche giorno dopo sempre da Reynal & Hitchcock nell'originale francese.",
+    "_author": "4e2dc85b-fb73-4a36-9ce5-46d7c328b8e7",
+    "_editors": [
+      "Tascabili Bompiani"
+    ],
+    "_img": "https://cs.ilgiardinodeilibri.it/data/prod/orig/p/piccolo_principe.jpg?_=1477174936",
+    "_soldCopies": 0,
+    "_reviews": [],
+    "_id": "6986bb75-402c-4488-9754-dea550dccfdd"
+  },
+  {
+    "_title": "L'alchimista",
+    "_price": 10,
+    "_launchDate": "Today at 7:11 PM",
+    "_genre": "Narrativa",
+    "_description": "L'alchimista è un libro di Paulo Coelho la cui prima edizione risale al 1988. Pubblicato in Brasile, è stato successivamente tradotto in cinquantasei lingue, tra cui l'italiano, e ha venduto oltre cento milioni di copie in più di centocinquanta nazioni.",
+    "_author": "4e2dc85b-fb73-4a36-9ce5-46d7c328b8e7",
+    "_editors": [
+      "Romanzi Bompiani"
+    ],
+    "_img": "https://images-na.ssl-images-amazon.com/images/I/91an1hOqmrL.jpg",
+    "_soldCopies": 0,
+    "_reviews": [],
+    "_id": "1601abb9-cb6b-4485-8fcb-4d121679e93f"
+  }
+]
